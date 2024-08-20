@@ -13,6 +13,9 @@ indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+[{*.yaml,*.yml}]
+indent_size = 2
+
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = true
 dotnet_style_require_accessibility_modifiers = always:warning
@@ -628,7 +631,3 @@ resharper_suggest_var_or_type_simple_types_highlighting = hint
 resharper_web_config_module_not_resolved_highlighting = warning
 resharper_web_config_type_not_resolved_highlighting = warning
 resharper_web_config_wrong_module_highlighting = warning
-
-[{*.yaml,*.yml}]
-indent_style = space
-indent_size = 2
