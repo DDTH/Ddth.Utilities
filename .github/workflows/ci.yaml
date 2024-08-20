@@ -45,7 +45,7 @@ jobs:
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./TestResults/**/coverage.cobertura.xml
+          files: ./TestResults/**/*.cobertura.xml
 
   # ReleaseDryRun:
   #   if: github.event_name == 'push'
