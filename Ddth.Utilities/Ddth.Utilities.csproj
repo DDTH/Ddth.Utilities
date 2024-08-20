@@ -11,7 +11,7 @@
         <PackageVersion>0.0.0</PackageVersion>
         <Title>Ddth.Utilities</Title>
         <Authors>DDTH;btnguyen2k</Authors>
-        <Description>Collection of commonly used utilities for .NET Core.</Description>
+        <Description>Collection of commonly used utilities for .NET</Description>
         <PackageTags>common, utility</PackageTags>
         <PackageProjectUrl>https://github.com/DDTH/Ddth.Utilities</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

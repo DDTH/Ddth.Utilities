@@ -43,10 +43,12 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v4
         with:
-          fail_ci_if_error: true
+          fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./TestResults/**/*.cobertura.xml
-          name: dotnet-${{ matrix.dotnet }}
+          flags: dotnet-${{ matrix.dotnet }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   ReleaseDryRun:
     if: github.event_name == 'push'
