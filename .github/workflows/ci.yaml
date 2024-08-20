@@ -43,7 +43,7 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v4
         with:
-          fail_ci_if_error: true
+          fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./TestResults/**/*.cobertura.xml
           flags: dotnet-${{ matrix.dotnet }}
