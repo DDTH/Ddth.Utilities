@@ -27,7 +27,7 @@ jobs:
           dotnet-version: ${{ matrix.dotnet }}
       - name: Choose .NET version
         run: |
-          VERSION=$(echo ${{ matrix.dotnet }} | sed -E "s/^([0-9]+).*/\1.0.0/")
+          VERSION=$(echo ${{ matrix.dotnet }} | sed -E "s/^([0-9]+).*/\1/")
           echo {\"sdk\": {\"version\": \"${VERSION}\"}} > global.json
           cat global.json
       - name: Display .NET version
