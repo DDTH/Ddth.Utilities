@@ -46,7 +46,9 @@ jobs:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./TestResults/**/*.cobertura.xml
-          name: dotnet-${{ matrix.dotnet }}
+          flags: dotnet-${{ matrix.dotnet }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   ReleaseDryRun:
     if: github.event_name == 'push'
