@@ -1,37 +1,37 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-	<PropertyGroup>
-		<PackageId>Ddth.Utilities</PackageId>
-		<PackageVersion>0.0.0</PackageVersion>
-		<Title>Ddth.Utilities</Title>
-		<Authors>DDTH;btnguyen2k</Authors>
-		<Description>Collection of commonly used utilities for .NET Core.</Description>
-		<PackageTags>common, utility</PackageTags>
-		<PackageProjectUrl>https://github.com/DDTH/Ddth.Utilities</PackageProjectUrl>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Copyright>Copyright (c) 2024 DDTH/Thanh Ba Nguyen</Copyright>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-	</PropertyGroup>
+    <PropertyGroup>
+        <PackageId>Ddth.Utilities</PackageId>
+        <PackageVersion>0.0.0</PackageVersion>
+        <Title>Ddth.Utilities</Title>
+        <Authors>DDTH;btnguyen2k</Authors>
+        <Description>Collection of commonly used utilities for .NET Core.</Description>
+        <PackageTags>common, utility</PackageTags>
+        <PackageProjectUrl>https://github.com/DDTH/Ddth.Utilities</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Copyright (c) 2024 DDTH/Thanh Ba Nguyen</Copyright>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
 
-	<PropertyGroup>
-		<RepositoryUrl>https://github.com/DDTH/Ddth.Utilities</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-	</PropertyGroup>
+    <PropertyGroup>
+        <RepositoryUrl>https://github.com/DDTH/Ddth.Utilities</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
 
-	<PropertyGroup>
-		<PackageReleaseNotes>${RELEASE-NOTES}</PackageReleaseNotes>
-	</PropertyGroup>
+    <PropertyGroup>
+        <PackageReleaseNotes>${RELEASE-NOTES}</PackageReleaseNotes>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<None Include="../README.md" Pack="true" PackagePath="" />
-		<None Include="../LICENSE.md" Pack="true" PackagePath="" />
-		<None Include="../RELEASE-NOTES.md" Pack="true" PackagePath="" />
-	</ItemGroup>
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath="" />
+        <None Include="../LICENSE.md" Pack="true" PackagePath="" />
+        <None Include="../RELEASE-NOTES.md" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>
