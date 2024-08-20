@@ -27,7 +27,7 @@ jobs:
           dotnet-version: ${{ matrix.dotnet }}
       - name: Choose .NET version
         run: |
-          echo {"sdk": {"version": "${{ matrix.dotnet }}"}} > global.json
+          echo {\"sdk\": {\"version\": \"${{ matrix.dotnet }}\"}} > global.json
           cat global.json
       - name: Display .NET version
         run: dotnet --version
