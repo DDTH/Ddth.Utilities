@@ -7,7 +7,7 @@ Collection of commonly used utilities for .NET.
 
 ## Features
 
-- [`ReflectionDIHelper`](Ddth.Utilities/ReflectionDIHelper.cs): Reflection helper class with Dependency Injection support.
+- [`ReflectionDIHelper`](https://github.com/DDTH/Ddth.Utilities/blob/main/Ddth.Utilities/ReflectionDIHelper.cs): Reflection helper class with Dependency Injection support.
 
 ## Usage
 
