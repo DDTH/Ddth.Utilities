@@ -9,7 +9,7 @@ public class RandomHelperTest
     [TestMethod]
     public void TestRandomCharEmptyChars()
     {
-        Assert.AreEqual('\0', Utilities.RandomHelper.Next(string.Empty));
+        Assert.AreEqual('\0', Utilities.RandomUtils.Next(string.Empty));
     }
 
     [TestMethod]
@@ -19,7 +19,7 @@ public class RandomHelperTest
         var outChars = "xyzt";
         for (var i = 0; i < NUM_ITERATIONS; i++)
         {
-            var randomChar = Utilities.RandomHelper.Next(inChars);
+            var randomChar = Utilities.RandomUtils.Next(inChars);
             Assert.IsTrue(inChars.Contains(randomChar, StringComparison.Ordinal));
             Assert.IsFalse(outChars.Contains(randomChar, StringComparison.Ordinal));
         }
@@ -30,7 +30,7 @@ public class RandomHelperTest
     {
         var minValue = 100;
         var maxValue = minValue - 1;
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Utilities.RandomHelper.Next(minValue, maxValue));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Utilities.RandomUtils.Next(minValue, maxValue));
     }
 
     [TestMethod]
@@ -40,7 +40,7 @@ public class RandomHelperTest
         for (var i = 0; i < NUM_ITERATIONS; i++)
         {
             var maxValue = minValue + Math.Min(i, RANGE);
-            var randomInt = Utilities.RandomHelper.Next(minValue, maxValue);
+            var randomInt = Utilities.RandomUtils.Next(minValue, maxValue);
             Assert.IsTrue(minValue == maxValue ? randomInt == minValue : randomInt >= minValue && randomInt < maxValue);
         }
     }
@@ -50,7 +50,7 @@ public class RandomHelperTest
     {
         var minValue = (short)100;
         var maxValue = (short)(minValue - 1);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Utilities.RandomHelper.Next(minValue, maxValue));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Utilities.RandomUtils.Next(minValue, maxValue));
     }
 
     [TestMethod]
@@ -60,7 +60,7 @@ public class RandomHelperTest
         for (var i = 0; i < NUM_ITERATIONS; i++)
         {
             var maxValue = (short)(minValue + Math.Min(i, RANGE));
-            var randomShort = Utilities.RandomHelper.Next(minValue, maxValue);
+            var randomShort = Utilities.RandomUtils.Next(minValue, maxValue);
             Assert.IsTrue(minValue == maxValue ? randomShort == minValue : randomShort >= minValue && randomShort < maxValue);
         }
     }
@@ -70,7 +70,7 @@ public class RandomHelperTest
     {
         var minValue = 100L;
         var maxValue = minValue - 1;
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Utilities.RandomHelper.Next(minValue, maxValue));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Utilities.RandomUtils.Next(minValue, maxValue));
     }
 
     [TestMethod]
@@ -80,7 +80,7 @@ public class RandomHelperTest
         for (var i = 0; i < NUM_ITERATIONS; i++)
         {
             var maxValue = minValue + Math.Min(i, RANGE);
-            var randomLong = Utilities.RandomHelper.Next(minValue, maxValue);
+            var randomLong = Utilities.RandomUtils.Next(minValue, maxValue);
             Assert.IsTrue(minValue == maxValue ? randomLong == minValue : randomLong >= minValue && randomLong < maxValue);
         }
     }

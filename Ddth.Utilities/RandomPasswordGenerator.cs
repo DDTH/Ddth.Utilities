@@ -66,26 +66,26 @@ public static class RandomPasswordGenerator
         var chars = new List<char>();
         if (passwordOptions.RequireLowercase)
         {
-            chars.Insert(RandomHelper.Next(0, chars.Count), RandomHelper.Next(charSet[0]));
+            chars.Insert(RandomUtils.Next(0, chars.Count), RandomUtils.Next(charSet[0]));
         }
         if (passwordOptions.RequireUppercase)
         {
-            chars.Insert(RandomHelper.Next(0, chars.Count), RandomHelper.Next(charSet[1]));
+            chars.Insert(RandomUtils.Next(0, chars.Count), RandomUtils.Next(charSet[1]));
         }
         if (passwordOptions.RequireDigit)
         {
-            chars.Insert(RandomHelper.Next(0, chars.Count), RandomHelper.Next(charSet[2]));
+            chars.Insert(RandomUtils.Next(0, chars.Count), RandomUtils.Next(charSet[2]));
         }
         if (passwordOptions.RequireNonAlphanumeric)
         {
-            chars.Insert(RandomHelper.Next(0, chars.Count), RandomHelper.Next(charSet[3]));
+            chars.Insert(RandomUtils.Next(0, chars.Count), RandomUtils.Next(charSet[3]));
         }
 
         var numSet = passwordOptions.RequireNonAlphanumeric ? charSet.Length : charSet.Length - 1;
         for (var i = chars.Count; i < passwordOptions.RequiredLength || chars.Distinct().Count() < passwordOptions.RequiredUniqueChars; i++)
         {
-            var randomCharSet = charSet[RandomHelper.Next(0, numSet)];
-            chars.Insert(RandomHelper.Next(0, chars.Count), RandomHelper.Next(randomCharSet));
+            var randomCharSet = charSet[RandomUtils.Next(0, numSet)];
+            chars.Insert(RandomUtils.Next(0, chars.Count), RandomUtils.Next(randomCharSet));
         }
 
         return new string(chars.ToArray());
