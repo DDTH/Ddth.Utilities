@@ -1,5 +1,12 @@
 # Ddth.Utilities Release Notes
 
+## 2024-09-21 - v0.2.0
+
+### Added/Refactoring
+
+- Added utility class `RandomUtils`.
+- Added utility class `RandomPasswordGenerator`.
+
 ## 2024-08-26 - v0.1.1
 
 ### Fixed/Improvement
