@@ -5,10 +5,39 @@ namespace Ddth.Utilities;
 /// <summary>
 /// Helper class to generate random passwords, respecting the given strength requirements.
 /// </summary>
+/// <example>
+///    <code>
+///    using Ddth.Utilities;
+///
+///    // Generate a random password with default strength requirements
+///    var randomPassword = RandomPasswordGenerator.GenerateRandomPassword();
+///
+///    // Generate a random password with custom strength requirements
+///    var passwordOptions = new PasswordOptions
+///    {
+///        RequiredLength = 16,
+///        RequiredUniqueChars = 8,
+///        RequireDigit = true,
+///        RequireLowercase = true,
+///        RequireUppercase = true,
+///        RequireNonAlphanumeric = true
+///    };
+///    var randomPassword = RandomPasswordGenerator.GenerateRandomPassword(passwordOptions, specialChars: "!@#$%^&amp;*()");
+///    </code>
+/// </example>
 public static class RandomPasswordGenerator
 {
     /// <summary>
-    /// Default password strength requirements.
+    /// Default password strength requirements:
+    ///
+    /// <list type="bullet">
+    ///    <item>Minimum 12 characters long</item>
+    ///    <item>At least 5 unique characters</item>
+    ///    <item>At least 1 digit</item>
+    ///    <item>At least 1 lowercase letter</item>
+    ///    <item>At least 1 uppercase letter</item>
+    ///    <item>No special characters</item>
+    /// </list>
     /// </summary>
     public static readonly PasswordOptions DefaultPasswordOptions = new()
     {
@@ -20,10 +49,10 @@ public static class RandomPasswordGenerator
         RequireUppercase = true
     };
 
-    public const string LowercaseChars = "abcdefghijklmnopqrstuvwxyz";
-    public const string UppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    public const string DigitChars = "0123456789";
-    public const string SpecialChars = "!@#$%^&*()_-+=[{]};:>|./?";
+    private const string LowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+    private const string UppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private const string DigitChars = "0123456789";
+    private const string SpecialChars = "!@#$%^&*()_-+=[{]};:>|./?";
 
     /// <summary>
     /// Generates a random password with default strength requirements <see cref="DefaultPasswordOptions"/>.
@@ -35,12 +64,12 @@ public static class RandomPasswordGenerator
     /// Generates a random password, respecting the given strength requirements.
     /// </summary>
     /// <param name="passwordOptions">A valid <see cref="PasswordOptions"/> object containing the password strength requirements.</param>
-    /// <param name="lowercaseChars"></param>
-    /// <param name="uppercaseChars"></param>
-    /// <param name="digitChars"></param>
-    /// <param name="specialChars"></param>
+    /// <param name="lowercaseChars">Optional set of lowercase characters to use when generating the password.</param>
+    /// <param name="uppercaseChars">Optional set of uppercase characters to use when generating the password.</param>
+    /// <param name="digitChars">Optional set of digit characters to use when generating the password.</param>
+    /// <param name="specialChars">Optional set of special characters to use when generating the password.</param>
     /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="ArgumentException">Thrown when the given character sets do not contain enough unique characters to satisfy the required unique characters.</exception>
     /// <remarks>Credits: https://www.ryadel.com/en/c-sharp-random-password-generator-asp-net-core-mvc/</remarks>
     public static string GenerateRandomPassword(
         PasswordOptions? passwordOptions,
