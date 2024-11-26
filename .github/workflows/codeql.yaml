@@ -3,9 +3,10 @@ name: "CodeQL"
 on:
   push:
     branches: [ '*' ]
-    paths-ignore:
-      - '.github/**'
-      - '*.md'
+    paths:
+      - 'Ddth.Utilities/**'
+      - '.github/workflows/codeql.yaml'
+      - '.github/codeql/codeql-config.yaml'
   pull_request:
     branches: [ '*' ]
   schedule:
