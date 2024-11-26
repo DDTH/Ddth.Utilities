@@ -14,9 +14,17 @@ updates:
     schedule:
       interval: "weekly"
       day: "saturday"
+    versioning-strategy: "widen"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"] # do not update to major version as it may contain breaking changes
 
   - package-ecosystem: "nuget"
     directory: "/Ddth.Utilities.Tests"
     schedule:
       interval: "weekly"
       day: "saturday"
+    versioning-strategy: "widen"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"] # do not update to major version as it may contain breaking changes
