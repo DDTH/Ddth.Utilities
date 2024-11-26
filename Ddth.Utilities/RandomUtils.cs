@@ -104,6 +104,6 @@ public static class RandomUtils
         var data = new byte[sizeof(long)];
         _random.GetBytes(data);
         var value = BitConverter.ToInt64(data, 0);
-        return (long)(Math.Abs(value % (maxValue - minValue)) + minValue);
+        return Math.Abs(value % (maxValue - minValue)) + minValue;
     }
 }
