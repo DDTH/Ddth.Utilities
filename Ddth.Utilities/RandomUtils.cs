@@ -5,6 +5,17 @@ namespace Ddth.Utilities;
 /// <summary>
 /// Utility class to generate random values using cryptographically strong value generator <see cref="RandomNumberGenerator"/>.
 /// </summary>
+/// <example>
+///    <code>
+///    using Ddth.Utilities;
+///
+///    // Generate a random int in range [0, 100)
+///    var randomInt = RandomUtils.Next(0, 100);
+///
+///    // Generate a random char from the set "abc"
+///    var randomChar = RandomUtils.Next("abc");
+///    </code>
+/// </example>
 public static class RandomUtils
 {
     private static readonly RandomNumberGenerator _random = RandomNumberGenerator.Create();
