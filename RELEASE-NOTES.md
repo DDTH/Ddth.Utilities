@@ -1,5 +1,11 @@
 # Ddth.Utilities Release Notes
 
+## 2024-11-26 - v0.2.1
+
+### Fixed/Improvement
+
+- Fix(CodeQL): Fixed CodeQL warnings.
+
 ## 2024-09-21 - v0.2.0
 
 ### Added/Refactoring
