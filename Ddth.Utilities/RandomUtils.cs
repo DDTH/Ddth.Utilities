@@ -10,12 +10,12 @@ public static class RandomUtils
     private static readonly RandomNumberGenerator _random = RandomNumberGenerator.Create();
 
     /// <summary>
-    /// Generates a random char from the given set of characters.
+    /// Generates a random <c>char</c> from the given set of characters.
     /// </summary>
-    /// <param name="chars"></param>
+    /// <param name="chars">The set of allowed characters to generate from.</param>
     /// <returns></returns>
     /// <remarks>
-    ///     if chars is null or empty, '\0' is returned
+    ///     If <c>chars</c> is null or empty, <c>'\0'</c> is returned.
     /// </remarks>
     public static char Next(string chars)
     {
@@ -23,19 +23,19 @@ public static class RandomUtils
         {
             return '\0';
         }
-        return chars[Next(0, chars.Length)];
+        var distinctChars = chars.Distinct().ToArray();
+        return distinctChars[Next(0, distinctChars.Length)];
     }
 
     /// <summary>
-    /// Generates a random int.
+    /// Generates a random <c>int</c>.
     /// </summary>
-    /// <param name="minValue">minimum value to generate (inclusive)</param>
-    /// <param name="maxValue">maximum value to generate (exclusive)</param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <param name="minValue">minimum value to generate (inclusive).</param>
+    /// <param name="maxValue">maximum value to generate (exclusive).</param>
+    /// <returns>The random <c>int</c> in range <c>[minValue, maxValue)</c>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">If <c>minValue</c> is greater than <c>maxValue</c>.</exception>
     /// <remarks>
-    ///     minValue must be less than or equal to maxValue<br/>
-    ///     if minValue == maxValue, minValue is returned
+    ///     <c>minValue</c> must be less than or equal to <c>maxValue</c>.
     /// </remarks>
     public static int Next(int minValue, int maxValue)
     {
@@ -54,15 +54,14 @@ public static class RandomUtils
     }
 
     /// <summary>
-    /// Generates a random short.
+    /// Generates a random <c>short</c>.
     /// </summary>
-    /// <param name="minValue">minimum value to generate (inclusive)</param>
-    /// <param name="maxValue">maximum value to generate (exclusive)</param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <param name="minValue">minimum value to generate (inclusive).</param>
+    /// <param name="maxValue">maximum value to generate (exclusive).</param>
+    /// <returns>The random <c>short</c> in range <c>[minValue, maxValue)</c>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">If <c>minValue</c> is greater than <c>maxValue</c>.</exception>
     /// <remarks>
-    ///     minValue must be less than or equal to maxValue<br/>
-    ///     if minValue == maxValue, minValue is returned
+    ///     <c>minValue</c> must be less than or equal to <c>maxValue</c>.
     /// </remarks>
     public static short Next(short minValue, short maxValue)
     {
@@ -81,15 +80,14 @@ public static class RandomUtils
     }
 
     /// <summary>
-    /// Generates a random long.
+    /// Generates a random <c>long</c>.
     /// </summary>
-    /// <param name="minValue">minimum value to generate (inclusive)</param>
-    /// <param name="maxValue">maximum value to generate (exclusive)</param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <param name="minValue">minimum value to generate (inclusive).</param>
+    /// <param name="maxValue">maximum value to generate (exclusive).</param>
+    /// <returns>The random <c>long</c> in range <c>[minValue, maxValue)</c>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">If <c>minValue</c> is greater than <c>maxValue</c>.</exception>
     /// <remarks>
-    ///     minValue must be less than or equal to maxValue<br/>
-    ///     if minValue == maxValue, minValue is returned
+    ///     <c>minValue</c> must be less than or equal to <c>maxValue</c>.
     /// </remarks>
     public static long Next(long minValue, long maxValue)
     {

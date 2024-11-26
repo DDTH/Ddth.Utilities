@@ -11,9 +11,9 @@ Collection of commonly used utilities for .NET.
 
 ## Features
 
-- [`RandomPasswordGenerator`](/Ddth.Utilities/api/Ddth.Utilities.RandomPasswordGenerator.html): Helper class to generate random passwords, respecting the given strength requirements.
-- [`RandomUtils`](/Ddth.Utilities/api/Ddth.Utilities.RandomUtils.html): Utility class to generate random values using cryptographically strong value generator.
-- [`ReflectionDIHelper`](/Ddth.Utilities/api/Ddth.Utilities.ReflectionDIHelper.html): Reflection helper class with Dependency Injection support.
+- [`RandomPasswordGenerator`](./api/Ddth.Utilities.RandomPasswordGenerator.html): Helper class to generate random passwords, respecting the given strength requirements.
+- [`RandomUtils`](./api/Ddth.Utilities.RandomUtils.html): Utility class to generate random values using cryptographically strong value generator.
+- [`ReflectionDIHelper`](./api/Ddth.Utilities.ReflectionDIHelper.html): Reflection helper class with Dependency Injection support.
 
 ## Usage
 
