@@ -16,11 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet: [ '6.x', '7.x', '8.x', '9.x' ]
+        dotnet: [ '6.x', '7.x', '8.x', '9.x', '10.x' ]
     name: Build and test with .NET ${{ matrix.dotnet }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Setup .NET 6.x # min .NET required by this package is 6.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.x'
       - name: Setup .NET ${{ matrix.dotnet }}
         uses: actions/setup-dotnet@v4
         with:
