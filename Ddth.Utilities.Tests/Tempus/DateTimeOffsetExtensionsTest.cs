@@ -126,6 +126,13 @@ public class DateTimeOffsetExtensionsTest
     }
 
     [TestMethod]
+    public void TestWithinTimeWindow_BeforeStart()
+    {
+        var dt = new DateTimeOffset(2026, 4, 18, 7, 0, 0, TimeSpan.Zero);
+        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
+    }
+
+    [TestMethod]
     public void TestWithinTimeWindow_AtStartBoundary_Inclusive()
     {
         var dt = new DateTimeOffset(2026, 4, 18, 9, 0, 0, TimeSpan.Zero);
@@ -157,6 +164,30 @@ public class DateTimeOffsetExtensionsTest
     public void TestWithinTimeWindow_AcrossMidnight_Outside()
     {
         var dt = new DateTimeOffset(2026, 4, 18, 15, 0, 0, TimeSpan.Zero);
+        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+    }
+
+    [TestMethod]
+    public void TestWithinTimeWindow_StartEqualsEnd_AlwaysFalse()
+    {
+        var exact = new DateTimeOffset(2026, 4, 18, 9, 0, 0, TimeSpan.Zero);
+        Assert.IsFalse(exact.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(9, 0)));
+
+        var other = new DateTimeOffset(2026, 4, 18, 15, 0, 0, TimeSpan.Zero);
+        Assert.IsFalse(other.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(9, 0)));
+    }
+
+    [TestMethod]
+    public void TestWithinTimeWindow_AcrossMidnight_AtStartBoundary_Inclusive()
+    {
+        var dt = new DateTimeOffset(2026, 4, 18, 22, 0, 0, TimeSpan.Zero);
+        Assert.IsTrue(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+    }
+
+    [TestMethod]
+    public void TestWithinTimeWindow_AcrossMidnight_AtEndBoundary_Exclusive()
+    {
+        var dt = new DateTimeOffset(2026, 4, 18, 2, 0, 0, TimeSpan.Zero);
         Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
     }
 
@@ -218,6 +249,20 @@ public class DateTimeOffsetExtensionsTest
     }
 
     [TestMethod]
+    public void TestWithinDowList_StringParams_MatchByAbbreviatedAfterNonMatch()
+    {
+        var dt = new DateTimeOffset(2026, 4, 18, 12, 0, 0, TimeSpan.Zero);
+        Assert.IsTrue(dt.WithinDowList("Monday", "Sat"));
+    }
+
+    [TestMethod]
+    public void TestWithinDowList_StringParams_MatchByFullNameAfterNonMatch()
+    {
+        var dt = new DateTimeOffset(2026, 4, 18, 12, 0, 0, TimeSpan.Zero);
+        Assert.IsTrue(dt.WithinDowList("Mon", "Saturday"));
+    }
+
+    [TestMethod]
     public void TestWithinDowList_StringEnumerable()
     {
         var dt = new DateTimeOffset(2026, 4, 18, 12, 0, 0, TimeSpan.Zero);
@@ -231,6 +276,22 @@ public class DateTimeOffsetExtensionsTest
         var dt = new DateTimeOffset(2026, 4, 18, 12, 0, 0, TimeSpan.Zero);
         IEnumerable<string> dows = new List<string> { "Mon", "Tue" };
         Assert.IsFalse(dt.WithinDowList(dows));
+    }
+
+    [TestMethod]
+    public void TestWithinDowList_StringEnumerable_MatchByAbbreviatedAfterNonMatch()
+    {
+        var dt = new DateTimeOffset(2026, 4, 18, 12, 0, 0, TimeSpan.Zero);
+        IEnumerable<string> dows = new List<string> { "Monday", "Sat" };
+        Assert.IsTrue(dt.WithinDowList(dows));
+    }
+
+    [TestMethod]
+    public void TestWithinDowList_StringEnumerable_MatchByFullNameAfterNonMatch()
+    {
+        var dt = new DateTimeOffset(2026, 4, 18, 12, 0, 0, TimeSpan.Zero);
+        IEnumerable<string> dows = new List<string> { "Mon", "Saturday" };
+        Assert.IsTrue(dt.WithinDowList(dows));
     }
 
     /*----------------------------------------------------------------------*/

@@ -157,6 +157,14 @@ public class DateTimeExtensionsTest
     }
 
     [TestMethod]
+    public void TestWithinTimeWindow_BeforeStart()
+    {
+        // time < start: short-circuits the && on the normal-window branch
+        var dt = new DateTime(2026, 4, 18, 7, 0, 0);
+        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
+    }
+
+    [TestMethod]
     public void TestWithinTimeWindow_AtStartBoundary_Inclusive()
     {
         var dt = new DateTime(2026, 4, 18, 9, 0, 0);
@@ -188,6 +196,31 @@ public class DateTimeExtensionsTest
     public void TestWithinTimeWindow_AcrossMidnight_Outside()
     {
         var dt = new DateTime(2026, 4, 18, 15, 0, 0);
+        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+    }
+
+    [TestMethod]
+    public void TestWithinTimeWindow_StartEqualsEnd_AlwaysFalse()
+    {
+        // When start == end the window is empty: time >= start && time < end is always false
+        var exact = new DateTime(2026, 4, 18, 9, 0, 0);
+        Assert.IsFalse(exact.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(9, 0)));
+
+        var other = new DateTime(2026, 4, 18, 15, 0, 0);
+        Assert.IsFalse(other.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(9, 0)));
+    }
+
+    [TestMethod]
+    public void TestWithinTimeWindow_AcrossMidnight_AtStartBoundary_Inclusive()
+    {
+        var dt = new DateTime(2026, 4, 18, 22, 0, 0);
+        Assert.IsTrue(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+    }
+
+    [TestMethod]
+    public void TestWithinTimeWindow_AcrossMidnight_AtEndBoundary_Exclusive()
+    {
+        var dt = new DateTime(2026, 4, 18, 2, 0, 0);
         Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
     }
 
@@ -249,6 +282,22 @@ public class DateTimeExtensionsTest
     }
 
     [TestMethod]
+    public void TestWithinDowList_StringParams_MatchByAbbreviatedAfterNonMatch()
+    {
+        // "Monday" fails both sides of ||, then "Sat" fails full-name but matches abbreviated
+        var dt = new DateTime(2026, 4, 18); // Saturday
+        Assert.IsTrue(dt.WithinDowList("Monday", "Sat"));
+    }
+
+    [TestMethod]
+    public void TestWithinDowList_StringParams_MatchByFullNameAfterNonMatch()
+    {
+        // "Mon" fails both sides of ||, then "Saturday" matches full-name (short-circuits ||)
+        var dt = new DateTime(2026, 4, 18); // Saturday
+        Assert.IsTrue(dt.WithinDowList("Mon", "Saturday"));
+    }
+
+    [TestMethod]
     public void TestWithinDowList_StringEnumerable()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
@@ -262,5 +311,21 @@ public class DateTimeExtensionsTest
         var dt = new DateTime(2026, 4, 18); // Saturday
         IEnumerable<string> dows = new List<string> { "Mon", "Tue" };
         Assert.IsFalse(dt.WithinDowList(dows));
+    }
+
+    [TestMethod]
+    public void TestWithinDowList_StringEnumerable_MatchByAbbreviatedAfterNonMatch()
+    {
+        var dt = new DateTime(2026, 4, 18); // Saturday
+        IEnumerable<string> dows = new List<string> { "Monday", "Sat" };
+        Assert.IsTrue(dt.WithinDowList(dows));
+    }
+
+    [TestMethod]
+    public void TestWithinDowList_StringEnumerable_MatchByFullNameAfterNonMatch()
+    {
+        var dt = new DateTime(2026, 4, 18); // Saturday
+        IEnumerable<string> dows = new List<string> { "Mon", "Saturday" };
+        Assert.IsTrue(dt.WithinDowList(dows));
     }
 }

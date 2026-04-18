@@ -126,7 +126,7 @@ public static class DateTimeOffsetExtensions
 			var timeZone = TimeZoneInfo.FindSystemTimeZoneById(tzId);
 			return TimeZoneInfo.ConvertTime(dateTime, timeZone);
 		}
-		catch (Exception e) when (e is TimeZoneNotFoundException || e is InvalidTimeZoneException)
+		catch (Exception e) when (e is TimeZoneNotFoundException or InvalidTimeZoneException)
 		{
 			return null;
 		}
@@ -145,7 +145,7 @@ public static class DateTimeOffsetExtensions
 			var timeZone = TimeZoneInfo.FindSystemTimeZoneById(tzId);
 			return new DateTimeOffset(dateTime.DateTime, timeZone.GetUtcOffset(dateTime));
 		}
-		catch (Exception e) when (e is TimeZoneNotFoundException || e is InvalidTimeZoneException)
+		catch (Exception e) when (e is TimeZoneNotFoundException or InvalidTimeZoneException)
 		{
 			return null;
 		}
