@@ -157,6 +157,6 @@ public class RandomPasswordGeneratorTest
         {
             RequiredUniqueChars = 8,
         };
-        Assert.ThrowsException<ArgumentException>(() => RandomPasswordGenerator.GenerateRandomPassword(options, lowercaseChars: "a", uppercaseChars: "A", digitChars: "0", specialChars: "*"));
+        Assert.ThrowsExactly<ArgumentException>(() => RandomPasswordGenerator.GenerateRandomPassword(options, lowercaseChars: "a", uppercaseChars: "A", digitChars: "0", specialChars: "*"));
     }
 }

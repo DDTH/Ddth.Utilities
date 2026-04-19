@@ -30,7 +30,7 @@ public class RandomHelperTest
     {
         var minValue = 100;
         var maxValue = minValue - 1;
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => RandomUtils.Next(minValue, maxValue));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => RandomUtils.Next(minValue, maxValue));
     }
 
     [TestMethod]
@@ -50,7 +50,7 @@ public class RandomHelperTest
     {
         var minValue = (short)100;
         var maxValue = (short)(minValue - 1);
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => RandomUtils.Next(minValue, maxValue));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => RandomUtils.Next(minValue, maxValue));
     }
 
     [TestMethod]
@@ -70,7 +70,7 @@ public class RandomHelperTest
     {
         var minValue = 100L;
         var maxValue = minValue - 1;
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => RandomUtils.Next(minValue, maxValue));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => RandomUtils.Next(minValue, maxValue));
     }
 
     [TestMethod]
