@@ -1,5 +1,11 @@
 # Ddth.Utilities Release Notes
 
+## 2026-04-19 - v0.3.0
+
+### Added/Refactoring/Deprecation
+
+- (Feat) Add module Ddth.Utilities.Tempus
+
 ## 2024-11-26 - v0.2.1
 
 ### Fixed/Improvement
