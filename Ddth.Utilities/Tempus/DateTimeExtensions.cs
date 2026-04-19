@@ -53,47 +53,47 @@ public static class DateTimeExtensions
 	/// Checks if the time component of the given DateTime falls within the specified time window (e.g. start &lt;= dateTime &lt; end).
 	/// </summary>
 	/// <param name="dateTime"></param>
-	/// <param name="start"></param>
-	/// <param name="end"></param>
+	/// <param name="startInclusive"></param>
+	/// <param name="endExclusive"></param>
 	/// <returns></returns>
 	/// <remarks>The time window can span across midnight. For example, a time window from 22:00 to 02:00 will include times from 22:00 to 23:59 and from 00:00 to 02:00.</remarks>
-	public static bool WithinTimeWindow(this DateTime dateTime, TimeOnly start, TimeOnly end)
+	public static bool IsWithinTimeWindow(this DateTime dateTime, TimeOnly startInclusive, TimeOnly endExclusive)
 	{
 		var time = TimeOnly.FromDateTime(dateTime);
-		return start <= end
-			? time >= start && time < end
-			: time >= start || time < end;
+		return startInclusive <= endExclusive
+			? time >= startInclusive && time < endExclusive
+			: time >= startInclusive || time < endExclusive;
 	}
 
 	/// <summary>
-	/// Checks if the day of week component of the given DateTime falls within the specified list of days of week.
+	/// Checks if the day of week component of the given DateTime falls on any of the specified days of week.
 	/// </summary>
 	/// <param name="dateTime"></param>
 	/// <param name="dows"></param>
 	/// <returns></returns>
-	public static bool WithinDowList(this DateTime dateTime, params DayOfWeek[] dows)
+	public static bool IsOnDayOfWeek(this DateTime dateTime, params DayOfWeek[] dows)
 	{
 		return dows.Contains(dateTime.DayOfWeek);
 	}
 
 	/// <summary>
-	/// Checks if the day of week component of the given DateTime falls within the specified list of days of week.
+	/// Checks if the day of week component of the given DateTime falls on any of the specified days of week.
 	/// </summary>
 	/// <param name="dateTime"></param>
 	/// <param name="dows"></param>
 	/// <returns></returns>
-	public static bool WithinDowList(this DateTime dateTime, IEnumerable<DayOfWeek> dows)
+	public static bool IsOnDayOfWeek(this DateTime dateTime, IEnumerable<DayOfWeek> dows)
 	{
 		return dows.Contains(dateTime.DayOfWeek);
 	}
 
 	/// <summary>
-	/// Checks if the day of week component of the given DateTime falls within the specified list of days of week (case-insensitive, supports both full and abbreviated day of week names).
+	/// Checks if the day of week component of the given DateTime falls on any of the specified days of week (case-insensitive, supports both full and abbreviated day of week names).
 	/// </summary>
 	/// <param name="dateTime"></param>
 	/// <param name="dows"></param>
 	/// <returns></returns>
-	public static bool WithinDowList(this DateTime dateTime, params string[] dows)
+	public static bool IsOnDayOfWeek(this DateTime dateTime, params string[] dows)
 	{
 		var dowStr1 = dateTime.DayOfWeek.ToString().ToUpper();
 		var dowStr2 = dowStr1.Substring(0, 3);
@@ -101,12 +101,12 @@ public static class DateTimeExtensions
 	}
 
 	/// <summary>
-	/// Checks if the day of week component of the given DateTime falls within the specified list of days of week (case-insensitive, supports both full and abbreviated day of week names).
+	/// Checks if the day of week component of the given DateTime falls on any of the specified days of week (case-insensitive, supports both full and abbreviated day of week names).
 	/// </summary>
 	/// <param name="dateTime"></param>
 	/// <param name="dows"></param>
 	/// <returns></returns>
-	public static bool WithinDowList(this DateTime dateTime, IEnumerable<string> dows)
+	public static bool IsOnDayOfWeek(this DateTime dateTime, IEnumerable<string> dows)
 	{
 		var dowStr1 = dateTime.DayOfWeek.ToString().ToUpper();
 		var dowStr2 = dowStr1.Substring(0, 3);

@@ -1,4 +1,4 @@
-﻿namespace Ddth.Utilities.Tempus;
+namespace Ddth.Utilities.Tempus;
 
 /// <summary>
 /// Extensions that provide utility methods for the <see cref="DateTimeOffset"/> struct.
@@ -50,50 +50,50 @@ public static class DateTimeOffsetExtensions
 	}
 
 	/// <summary>
-	/// Checks if the time component of the given DateTimeOffset falls within the specified time window (e.g. start <= dateTime < end).
+	/// Checks if the time component of the given DateTimeOffset falls within the specified time window (e.g. start &lt;= dateTime &lt; end).
 	/// </summary>
 	/// <param name="dateTime"></param>
-	/// <param name="start"></param>
-	/// <param name="end"></param>
+	/// <param name="startInclusive"></param>
+	/// <param name="endExclusive"></param>
 	/// <returns></returns>
 	/// <remarks>The time window can span across midnight. For example, a time window from 22:00 to 02:00 will include times from 22:00 to 23:59 and from 00:00 to 02:00.</remarks>
-	public static bool WithinTimeWindow(this DateTimeOffset dateTime, TimeOnly start, TimeOnly end)
-	{
-		var time = TimeOnly.FromDateTime(dateTime.DateTime);
-		return start <= end
-			? time >= start && time < end
-			: time >= start || time < end;
-	}
+	public static bool IsWithinTimeWindow(this DateTimeOffset dateTime, TimeOnly startInclusive, TimeOnly endExclusive)
+    {
+        var time = TimeOnly.FromDateTime(dateTime.DateTime);
+        return startInclusive <= endExclusive
+            ? time >= startInclusive && time < endExclusive
+            : time >= startInclusive || time < endExclusive;
+    }
 
 	/// <summary>
-	/// Checks if the day of week component of the given DateTimeOffset falls within the specified list of days of week.
+	/// Checks if the day of week component of the given DateTimeOffset falls on any of the specified days of week.
 	/// </summary>
 	/// <param name="dateTime"></param>
 	/// <param name="dows"></param>
 	/// <returns></returns>
-	public static bool WithinDowList(this DateTimeOffset dateTime, params DayOfWeek[] dows)
-	{
-		return dows.Contains(dateTime.DayOfWeek);
-	}
-
-	/// <summary>
-	/// Checks if the day of week component of the given DateTimeOffset falls within the specified list of days of week.
-	/// </summary>
-	/// <param name="dateTime"></param>
-	/// <param name="dows"></param>
-	/// <returns></returns>
-	public static bool WithinDowList(this DateTimeOffset dateTime, IEnumerable<DayOfWeek> dows)
+	public static bool IsOnDayOfWeek(this DateTimeOffset dateTime, params DayOfWeek[] dows)
 	{
 		return dows.Contains(dateTime.DayOfWeek);
 	}
 
 	/// <summary>
-	/// Checks if the day of week component of the given DateTimeOffset falls within the specified list of days of week (case-insensitive, supports both full and abbreviated day of week names).
+	/// Checks if the day of week component of the given DateTimeOffset falls on any of the specified days of week.
 	/// </summary>
 	/// <param name="dateTime"></param>
 	/// <param name="dows"></param>
 	/// <returns></returns>
-	public static bool WithinDowList(this DateTimeOffset dateTime, params string[] dows)
+	public static bool IsOnDayOfWeek(this DateTimeOffset dateTime, IEnumerable<DayOfWeek> dows)
+	{
+		return dows.Contains(dateTime.DayOfWeek);
+	}
+
+	/// <summary>
+	/// Checks if the day of week component of the given DateTimeOffset falls on any of the specified days of week (case-insensitive, supports both full and abbreviated day of week names).
+	/// </summary>
+	/// <param name="dateTime"></param>
+	/// <param name="dows"></param>
+	/// <returns></returns>
+	public static bool IsOnDayOfWeek(this DateTimeOffset dateTime, params string[] dows)
 	{
 		var dowStr1 = dateTime.DayOfWeek.ToString().ToUpper();
 		var dowStr2 = dowStr1.Substring(0, 3);
@@ -101,12 +101,12 @@ public static class DateTimeOffsetExtensions
 	}
 
 	/// <summary>
-	/// Checks if the day of week component of the given DateTimeOffset falls within the specified list of days of week (case-insensitive, supports both full and abbreviated day of week names).
+	/// Checks if the day of week component of the given DateTimeOffset falls on any of the specified days of week (case-insensitive, supports both full and abbreviated day of week names).
 	/// </summary>
 	/// <param name="dateTime"></param>
 	/// <param name="dows"></param>
 	/// <returns></returns>
-	public static bool WithinDowList(this DateTimeOffset dateTime, IEnumerable<string> dows)
+	public static bool IsOnDayOfWeek(this DateTimeOffset dateTime, IEnumerable<string> dows)
 	{
 		var dowStr1 = dateTime.DayOfWeek.ToString().ToUpper();
 		var dowStr2 = dowStr1.Substring(0, 3);

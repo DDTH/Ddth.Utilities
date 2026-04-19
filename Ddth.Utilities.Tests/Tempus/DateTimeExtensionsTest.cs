@@ -139,193 +139,193 @@ public class DateTimeExtensionsTest
     }
 
     /*----------------------------------------------------------------------*/
-    /* WithinTimeWindow                                                     */
+    /* IsWithinTimeWindow                                                     */
     /*----------------------------------------------------------------------*/
 
     [TestMethod]
-    public void TestWithinTimeWindow_InsideNormalWindow()
+    public void TestIsWithinTimeWindow_InsideNormalWindow()
     {
         var dt = new DateTime(2026, 4, 18, 10, 0, 0);
-        Assert.IsTrue(dt.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
+        Assert.IsTrue(dt.IsWithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_OutsideNormalWindow()
+    public void TestIsWithinTimeWindow_OutsideNormalWindow()
     {
         var dt = new DateTime(2026, 4, 18, 18, 0, 0);
-        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
+        Assert.IsFalse(dt.IsWithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_BeforeStart()
+    public void TestIsWithinTimeWindow_BeforeStart()
     {
         // time < start: short-circuits the && on the normal-window branch
         var dt = new DateTime(2026, 4, 18, 7, 0, 0);
-        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
+        Assert.IsFalse(dt.IsWithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_AtStartBoundary_Inclusive()
+    public void TestIsWithinTimeWindow_AtStartBoundary_Inclusive()
     {
         var dt = new DateTime(2026, 4, 18, 9, 0, 0);
-        Assert.IsTrue(dt.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
+        Assert.IsTrue(dt.IsWithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_AtEndBoundary_Exclusive()
+    public void TestIsWithinTimeWindow_AtEndBoundary_Exclusive()
     {
         var dt = new DateTime(2026, 4, 18, 17, 0, 0);
-        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
+        Assert.IsFalse(dt.IsWithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(17, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_AcrossMidnight_BeforeMidnight()
+    public void TestIsWithinTimeWindow_AcrossMidnight_BeforeMidnight()
     {
         var dt = new DateTime(2026, 4, 18, 23, 0, 0);
-        Assert.IsTrue(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+        Assert.IsTrue(dt.IsWithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_AcrossMidnight_AfterMidnight()
+    public void TestIsWithinTimeWindow_AcrossMidnight_AfterMidnight()
     {
         var dt = new DateTime(2026, 4, 18, 1, 0, 0);
-        Assert.IsTrue(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+        Assert.IsTrue(dt.IsWithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_AcrossMidnight_Outside()
+    public void TestIsWithinTimeWindow_AcrossMidnight_Outside()
     {
         var dt = new DateTime(2026, 4, 18, 15, 0, 0);
-        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+        Assert.IsFalse(dt.IsWithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_StartEqualsEnd_AlwaysFalse()
+    public void TestIsWithinTimeWindow_StartEqualsEnd_AlwaysFalse()
     {
         // When start == end the window is empty: time >= start && time < end is always false
         var exact = new DateTime(2026, 4, 18, 9, 0, 0);
-        Assert.IsFalse(exact.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(9, 0)));
+        Assert.IsFalse(exact.IsWithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(9, 0)));
 
         var other = new DateTime(2026, 4, 18, 15, 0, 0);
-        Assert.IsFalse(other.WithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(9, 0)));
+        Assert.IsFalse(other.IsWithinTimeWindow(new TimeOnly(9, 0), new TimeOnly(9, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_AcrossMidnight_AtStartBoundary_Inclusive()
+    public void TestIsWithinTimeWindow_AcrossMidnight_AtStartBoundary_Inclusive()
     {
         var dt = new DateTime(2026, 4, 18, 22, 0, 0);
-        Assert.IsTrue(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+        Assert.IsTrue(dt.IsWithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
     }
 
     [TestMethod]
-    public void TestWithinTimeWindow_AcrossMidnight_AtEndBoundary_Exclusive()
+    public void TestIsWithinTimeWindow_AcrossMidnight_AtEndBoundary_Exclusive()
     {
         var dt = new DateTime(2026, 4, 18, 2, 0, 0);
-        Assert.IsFalse(dt.WithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
+        Assert.IsFalse(dt.IsWithinTimeWindow(new TimeOnly(22, 0), new TimeOnly(2, 0)));
     }
 
     /*----------------------------------------------------------------------*/
-    /* WithinDowList                                                        */
+    /* IsOnDayOfWeek                                                        */
     /*----------------------------------------------------------------------*/
 
     [TestMethod]
-    public void TestWithinDowList_DayOfWeekParams_Match()
+    public void TestIsOnDayOfWeek_DayOfWeekParams_Match()
     {
         // Saturday
         var dt = new DateTime(2026, 4, 18);
-        Assert.IsTrue(dt.WithinDowList(DayOfWeek.Saturday, DayOfWeek.Sunday));
+        Assert.IsTrue(dt.IsOnDayOfWeek(DayOfWeek.Saturday, DayOfWeek.Sunday));
     }
 
     [TestMethod]
-    public void TestWithinDowList_DayOfWeekParams_NoMatch()
+    public void TestIsOnDayOfWeek_DayOfWeekParams_NoMatch()
     {
         var dt = new DateTime(2026, 4, 18);
-        Assert.IsFalse(dt.WithinDowList(DayOfWeek.Monday, DayOfWeek.Tuesday));
+        Assert.IsFalse(dt.IsOnDayOfWeek(DayOfWeek.Monday, DayOfWeek.Tuesday));
     }
 
     [TestMethod]
-    public void TestWithinDowList_DayOfWeekEnumerable()
+    public void TestIsOnDayOfWeek_DayOfWeekEnumerable()
     {
         var dt = new DateTime(2026, 4, 18);
         IEnumerable<DayOfWeek> dows = new List<DayOfWeek> { DayOfWeek.Saturday };
-        Assert.IsTrue(dt.WithinDowList(dows));
+        Assert.IsTrue(dt.IsOnDayOfWeek(dows));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringParams_FullName()
+    public void TestIsOnDayOfWeek_StringParams_FullName()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
-        Assert.IsTrue(dt.WithinDowList("Saturday"));
+        Assert.IsTrue(dt.IsOnDayOfWeek("Saturday"));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringParams_Abbreviated()
+    public void TestIsOnDayOfWeek_StringParams_Abbreviated()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
-        Assert.IsTrue(dt.WithinDowList("Sat"));
+        Assert.IsTrue(dt.IsOnDayOfWeek("Sat"));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringParams_CaseInsensitive()
+    public void TestIsOnDayOfWeek_StringParams_CaseInsensitive()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
-        Assert.IsTrue(dt.WithinDowList("saturday"));
-        Assert.IsTrue(dt.WithinDowList("SATURDAY"));
-        Assert.IsTrue(dt.WithinDowList("sat"));
+        Assert.IsTrue(dt.IsOnDayOfWeek("saturday"));
+        Assert.IsTrue(dt.IsOnDayOfWeek("SATURDAY"));
+        Assert.IsTrue(dt.IsOnDayOfWeek("sat"));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringParams_NoMatch()
+    public void TestIsOnDayOfWeek_StringParams_NoMatch()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
-        Assert.IsFalse(dt.WithinDowList("Monday", "Tuesday"));
+        Assert.IsFalse(dt.IsOnDayOfWeek("Monday", "Tuesday"));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringParams_MatchByAbbreviatedAfterNonMatch()
+    public void TestIsOnDayOfWeek_StringParams_MatchByAbbreviatedAfterNonMatch()
     {
         // "Monday" fails both sides of ||, then "Sat" fails full-name but matches abbreviated
         var dt = new DateTime(2026, 4, 18); // Saturday
-        Assert.IsTrue(dt.WithinDowList("Monday", "Sat"));
+        Assert.IsTrue(dt.IsOnDayOfWeek("Monday", "Sat"));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringParams_MatchByFullNameAfterNonMatch()
+    public void TestIsOnDayOfWeek_StringParams_MatchByFullNameAfterNonMatch()
     {
         // "Mon" fails both sides of ||, then "Saturday" matches full-name (short-circuits ||)
         var dt = new DateTime(2026, 4, 18); // Saturday
-        Assert.IsTrue(dt.WithinDowList("Mon", "Saturday"));
+        Assert.IsTrue(dt.IsOnDayOfWeek("Mon", "Saturday"));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringEnumerable()
+    public void TestIsOnDayOfWeek_StringEnumerable()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
         IEnumerable<string> dows = new List<string> { "Sat", "Sun" };
-        Assert.IsTrue(dt.WithinDowList(dows));
+        Assert.IsTrue(dt.IsOnDayOfWeek(dows));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringEnumerable_NoMatch()
+    public void TestIsOnDayOfWeek_StringEnumerable_NoMatch()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
         IEnumerable<string> dows = new List<string> { "Mon", "Tue" };
-        Assert.IsFalse(dt.WithinDowList(dows));
+        Assert.IsFalse(dt.IsOnDayOfWeek(dows));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringEnumerable_MatchByAbbreviatedAfterNonMatch()
+    public void TestIsOnDayOfWeek_StringEnumerable_MatchByAbbreviatedAfterNonMatch()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
         IEnumerable<string> dows = new List<string> { "Monday", "Sat" };
-        Assert.IsTrue(dt.WithinDowList(dows));
+        Assert.IsTrue(dt.IsOnDayOfWeek(dows));
     }
 
     [TestMethod]
-    public void TestWithinDowList_StringEnumerable_MatchByFullNameAfterNonMatch()
+    public void TestIsOnDayOfWeek_StringEnumerable_MatchByFullNameAfterNonMatch()
     {
         var dt = new DateTime(2026, 4, 18); // Saturday
         IEnumerable<string> dows = new List<string> { "Mon", "Saturday" };
-        Assert.IsTrue(dt.WithinDowList(dows));
+        Assert.IsTrue(dt.IsOnDayOfWeek(dows));
     }
 }
