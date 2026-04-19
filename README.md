@@ -11,6 +11,8 @@ Collection of commonly used utilities for .NET.
 - [`RandomUtils`](https://ddth.github.io/Ddth.Utilities/api/Ddth.Utilities.RandomUtils.html): Utility class to generate random values using cryptographically strong value generator.
 - [`ReflectionDIHelper`](https://ddth.github.io/Ddth.Utilities/api/Ddth.Utilities.ReflectionDIHelper.html): Reflection helper class with Dependency Injection support.
 
+- [`Tempus`](https://ddth.github.io/Ddth.Utilities/api/Ddth.Utilities.Tempus.html): Utility extensions for [DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime) and [DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset) types.
+
 ## Usage
 
 ```sh
