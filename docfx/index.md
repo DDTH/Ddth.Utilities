@@ -1,33 +1,27 @@
----
-_layout: landing
----
-
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Actions Status](https://github.com/DDTH/Ddth.Utilities/workflows/ci/badge.svg)](https://github.com/DDTH/Ddth.Utilities/actions)
 [![codecov](https://codecov.io/gh/DDTH/Ddth.Utilities/graph/badge.svg)](https://codecov.io/gh/DDTH/Ddth.Utilities)
-[![Release](https://img.shields.io/github/release/DDTH/Ddth.Utilities.svg?style=flat-square)](https://github.com/DDTH/Ddth.Utilities/blob/main/RELEASE-NOTES.md)
+[![Release](https://img.shields.io/github/release/DDTH/Ddth.Utilities.svg?style=flat-square)](RELEASE-NOTES.md)
 
 Collection of commonly used utilities for .NET.
 
 ## Features
 
-- [`RandomPasswordGenerator`](./api/Ddth.Utilities.RandomPasswordGenerator.html): Helper class to generate random passwords, respecting the given strength requirements.
-- [`RandomUtils`](./api/Ddth.Utilities.RandomUtils.html): Utility class to generate random values using cryptographically strong value generator.
-- [`ReflectionDIHelper`](./api/Ddth.Utilities.ReflectionDIHelper.html): Reflection helper class with Dependency Injection support.
+- [`RandomPasswordGenerator`](https://ddth.github.io/Ddth.Utilities/api/Ddth.Utilities.RandomPasswordGenerator.html): Helper class to generate random passwords, respecting the given strength requirements.
+- [`RandomUtils`](https://ddth.github.io/Ddth.Utilities/api/Ddth.Utilities.RandomUtils.html): Utility class to generate random values using cryptographically strong value generator.
+- [`ReflectionDIHelper`](https://ddth.github.io/Ddth.Utilities/api/Ddth.Utilities.ReflectionDIHelper.html): Reflection helper class with Dependency Injection support.
+
+- [`Tempus`](https://ddth.github.io/Ddth.Utilities/api/Ddth.Utilities.Tempus.html): Utility extensions for [DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime) and [DateTimeOffset](https://learn.microsoft.com/en-us/dotnet/api/system.datetimeoffset) types.
 
 ## Usage
-
-Add the package to your project:
 
 ```sh
 $ dotnet add package Ddth.Utilities
 ```
 
-Happy coding!
-
 ## License
 
-This package is licensed under the MIT License - see the [LICENSE.md](https://github.com/DDTH/Ddth.Utilities/blob/main/LICENSE.md) file for details.
+This package is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## Contributing & Support
 

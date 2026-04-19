@@ -62,10 +62,41 @@ public class ReflectionDIHelperTest
     }
 
     [TestMethod]
-    public void TestBuildDIParamsNullResult()
+    public void TestBuildDIParamsFallbackToServiceProviderWithNoAdditionalServices()
+    {
+        var parameters = new Type[] { typeof(string) };
+        var result = ReflectionDIHelper.BuildDIParams(_serviceProvider, parameters);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Length);
+        Assert.IsInstanceOfType(result[0], typeof(string));
+        Assert.AreEqual("Dummy String", ((string)result[0]!));
+    }
+
+    [TestMethod]
+    public void TestBuildDIParamsNullResultWithNullServiceProvider()
     {
         var parameters = new Type[] { typeof(IUnusedInterface) };
         var result = ReflectionDIHelper.BuildDIParams(null, _services, parameters);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Length);
+        Assert.IsNull(result[0]);
+    }
+
+    [TestMethod]
+    public void TestBuildDIParamsNullResultWithNullServiceProviderAndNoAdditionalServices()
+    {
+        var parameters = new Type[] { typeof(IUnusedInterface) };
+        var result = ReflectionDIHelper.BuildDIParams(null, null, parameters);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Length);
+        Assert.IsNull(result[0]);
+    }
+
+     [TestMethod]
+    public void TestBuildDIParamsNullResultWithServiceProvider()
+    {
+        var parameters = new Type[] { typeof(IUnusedInterface) };
+        var result = ReflectionDIHelper.BuildDIParams(_serviceProvider, parameters);
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Length);
         Assert.IsNull(result[0]);

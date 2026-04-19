@@ -4,13 +4,13 @@
     {
       "src": [
         {
-          "src": "../Ddth.Utilities/",
+          "src": "../Ddth.Utilities",
           "files": [
             "**/*.csproj"
           ]
         }
       ],
-      "output": "api"
+      "dest": "api"
     }
   ],
   "build": {
@@ -37,10 +37,10 @@
       "modern"
     ],
     "globalMetadata": {
-      "_appName": "Ddth.Utilities",
-      "_appTitle": "Ddth.Utilities",
+      "_appName": "",
+      "_appTitle": "",
       "_enableSearch": true,
-      "pdf": false
+      "pdf": true
     }
   }
 }
