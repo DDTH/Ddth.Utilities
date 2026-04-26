@@ -30,7 +30,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
           config-file: ./.github/codeql/codeql-config.yaml
@@ -39,9 +39,9 @@ jobs:
       # ℹ️ Command-line programs to run using the OS shell.
       # 📚 https://git.io/JvXDl
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@v4
       # - name: Build
       #   run: |
       #     dotnet build
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
