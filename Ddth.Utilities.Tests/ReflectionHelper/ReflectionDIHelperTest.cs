@@ -92,7 +92,7 @@ public class ReflectionDIHelperTest
         Assert.IsNull(result[0]);
     }
 
-     [TestMethod]
+    [TestMethod]
     public void TestBuildDIParamsNullResultWithServiceProvider()
     {
         var parameters = new Type[] { typeof(IUnusedInterface) };

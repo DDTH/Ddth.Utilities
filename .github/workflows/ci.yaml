@@ -54,9 +54,36 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+  Lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: [ '6.x', '7.x', '8.x', '9.x', '10.x' ]
+    name: Check coding style with .NET ${{ matrix.dotnet }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup .NET 6.x # min .NET required by this package is 6.x
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '6.x'
+      - name: Setup .NET ${{ matrix.dotnet }}
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
+      - name: Choose .NET version
+        run: |
+          VERSION=$(echo ${{ matrix.dotnet }} | sed -E "s/^([0-9]+).*/\1/")
+          echo {\"sdk\": {\"version\": \"${VERSION}\"}} > global.json
+          cat global.json
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Check formatting
+        run: dotnet format --no-restore --verify-no-changes
+
   ReleaseDryRun:
     if: github.event_name == 'push'
-    needs: BuildAndTest
+    needs: [ BuildAndTest, Lint ]
     runs-on: ubuntu-latest
     outputs:
       RESULT: ${{ steps.release_dry_run.outputs.result }}

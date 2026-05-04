@@ -27,12 +27,14 @@ This is a .NET 6+ NuGet package (`Ddth.Utilities`) providing static utility clas
 - **`ReflectionDIHelper`** — Creates instances via reflection with automatic constructor-based dependency injection from `IServiceProvider`, with optional additional service overrides.
 - **`Tempus`** (`Ddth.Utilities.Tempus` sub-namespace) — Extension methods on `DateTime` and `DateTimeOffset` for start-of-day, weekday navigation, time-window checks, day-of-week matching, and time-zone conversion. Uses `#if NET6_0` conditionals for API differences across target frameworks.
 
+The only external dependency is `Microsoft.AspNetCore.Identity` (for `PasswordOptions`).
+
 ## Conventions
 
 - All utility classes are `static`. Root-level utilities live in `Ddth.Utilities`; feature groups use sub-namespaces with their own subdirectory (e.g., `Tempus/` → `Ddth.Utilities.Tempus`).
+- Both projects enable `ImplicitUsings` and `Nullable`. The test project has a global `<Using>` for `Microsoft.VisualStudio.TestTools.UnitTesting`, so MSTest attributes are available without explicit imports.
 - Tests use **MSTest** (`[TestClass]`, `[TestMethod]`, `[TestInitialize]`).
-- Test classes are organized into subdirectories by feature area (e.g., `RandomHelper/`, `ReflectionHelper/`), with test data in separate partial class files (`*.Data.cs`).
-- Nullable reference types are enabled (`<Nullable>enable</Nullable>`).
+- Test classes are organized into subdirectories by feature area (e.g., `RandomHelper/`, `ReflectionHelper/`, `Tempus/`), with test data in separate partial class files (`*.Data.cs`).
 - XML doc comments (`<summary>`, `<remarks>`, `<example>`) are used on all public APIs.
 - CI tests against .NET 6.x through 10.x. The minimum target framework is `net6.0`.
-- Releases use [semantic-release](https://github.com/btnguyen2k/action-semrelease) via GitHub Actions — version bumps are driven by commit messages, not manual edits to `PackageVersion`.
+- Releases use [semantic-release](https://github.com/btnguyen2k/action-semrelease) via GitHub Actions — version bumps are driven by commit messages, not manual edits to `PackageVersion`. Releases are triggered by merging a PR to the `release` branch.
