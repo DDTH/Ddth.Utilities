@@ -75,6 +75,24 @@ public static class DateTimeExtensions
     }
 
     /// <summary>
+    /// Returns a new DateTime set to 00:00:00 on the 1st day of the fiscal year, preserving <see cref="DateTime.Kind"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <param name="firstMonthOfFiscalYear">The month that starts the fiscal year (1–12). Defaults to 1 (January).</param>
+    /// <returns></returns>
+    public static DateTime StartOfFiscalYear(this DateTime dateTime, int firstMonthOfFiscalYear = 1)
+    {
+        if (firstMonthOfFiscalYear < 1 || firstMonthOfFiscalYear > 12)
+            throw new ArgumentOutOfRangeException(nameof(firstMonthOfFiscalYear), firstMonthOfFiscalYear, "Value must be between 1 and 12.");
+        var year = dateTime.Month >= firstMonthOfFiscalYear ? dateTime.Year : dateTime.Year - 1;
+#if NET6_0
+        return new DateTime(year, firstMonthOfFiscalYear, 1, 0, 0, 0, 0, dateTime.Kind);
+#else
+        return new DateTime(year, firstMonthOfFiscalYear, 1, 0, 0, 0, 0, 0, dateTime.Kind);
+#endif
+    }
+
+    /// <summary>
     /// Returns a new DateTime representing the previous weekday (Monday to Friday) of the given DateTime.
     /// </summary>
     /// <param name="dateTime"></param>

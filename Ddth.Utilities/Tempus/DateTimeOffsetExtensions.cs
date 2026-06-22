@@ -75,6 +75,24 @@ public static class DateTimeOffsetExtensions
     }
 
     /// <summary>
+    /// Returns a new DateTimeOffset set to 00:00:00 on the 1st day of the fiscal year, preserving <see cref="DateTimeOffset.Offset"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <param name="firstMonthOfFiscalYear">The month that starts the fiscal year (1–12). Defaults to 1 (January).</param>
+    /// <returns></returns>
+    public static DateTimeOffset StartOfFiscalYear(this DateTimeOffset dateTime, int firstMonthOfFiscalYear = 1)
+    {
+        if (firstMonthOfFiscalYear < 1 || firstMonthOfFiscalYear > 12)
+            throw new ArgumentOutOfRangeException(nameof(firstMonthOfFiscalYear), firstMonthOfFiscalYear, "Value must be between 1 and 12.");
+        var year = dateTime.Month >= firstMonthOfFiscalYear ? dateTime.Year : dateTime.Year - 1;
+#if NET6_0
+        return new DateTimeOffset(year, firstMonthOfFiscalYear, 1, 0, 0, 0, 0, dateTime.Offset);
+#else
+        return new DateTimeOffset(year, firstMonthOfFiscalYear, 1, 0, 0, 0, 0, 0, dateTime.Offset);
+#endif
+    }
+
+    /// <summary>
     /// Returns a new DateTimeOffset representing the previous weekday (Monday to Friday) of the given DateTimeOffset.
     /// </summary>
     /// <param name="dateTime"></param>

@@ -6,3 +6,4 @@
 - feat: Add StartOfMonth extension method for DateTime and DateTimeOffset.
 - feat: Add StartOfQuarter extension method for DateTime and DateTimeOffset.
 - feat: Add StartOfCalendarYear extension method for DateTime and DateTimeOffset.
+- feat: Add StartOfFiscalYear extension method for DateTime and DateTimeOffset.

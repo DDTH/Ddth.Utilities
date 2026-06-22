@@ -186,6 +186,81 @@ public class DateTimeExtensionsTest
     }
 
     /*----------------------------------------------------------------------*/
+    /* StartOfFiscalYear                                                    */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfFiscalYear_DefaultJanuary()
+    {
+        var dt = new DateTime(2026, 8, 15, 10, 0, 0, DateTimeKind.Utc);
+        var result = dt.StartOfFiscalYear();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(1, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_July_AfterStart()
+    {
+        // Australia: fiscal year starts July. Date in Oct 2026 -> FY starts Jul 2026
+        var dt = new DateTime(2026, 10, 15, 14, 30, 0, DateTimeKind.Local);
+        var result = dt.StartOfFiscalYear(7);
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(7, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(DateTimeKind.Local, result.Kind);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_July_BeforeStart()
+    {
+        // Date in Mar 2026 -> FY starts Jul 2025
+        var dt = new DateTime(2026, 3, 15);
+        var result = dt.StartOfFiscalYear(7);
+        Assert.Equal(2025, result.Year);
+        Assert.Equal(7, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_April_OnStart()
+    {
+        // UK: fiscal year starts April. Date is exactly Apr 1 -> FY starts Apr 2026
+        var dt = new DateTime(2026, 4, 1, 0, 0, 0, DateTimeKind.Utc);
+        var result = dt.StartOfFiscalYear(4);
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(4, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_October_BeforeStart()
+    {
+        // US federal: fiscal year starts October. Date in Sep 2026 -> FY starts Oct 2025
+        var dt = new DateTime(2026, 9, 30);
+        var result = dt.StartOfFiscalYear(10);
+        Assert.Equal(2025, result.Year);
+        Assert.Equal(10, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_InvalidMonth_Zero()
+    {
+        var dt = new DateTime(2026, 6, 15);
+        Assert.Throws<ArgumentOutOfRangeException>(() => dt.StartOfFiscalYear(0));
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_InvalidMonth_Thirteen()
+    {
+        var dt = new DateTime(2026, 6, 15);
+        Assert.Throws<ArgumentOutOfRangeException>(() => dt.StartOfFiscalYear(13));
+    }
+
+    /*----------------------------------------------------------------------*/
     /* StartOfWeek                                                          */
     /*----------------------------------------------------------------------*/
 
