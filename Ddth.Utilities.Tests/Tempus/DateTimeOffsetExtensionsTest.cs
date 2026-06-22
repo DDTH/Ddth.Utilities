@@ -40,6 +40,44 @@ public class DateTimeOffsetExtensionsTest
     }
 
     /*----------------------------------------------------------------------*/
+    /* StartOfMonth                                                         */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfMonth_ResetsToFirstDayAndZeroesTime()
+    {
+        var dt = new DateTimeOffset(2026, 7, 18, 14, 30, 45, 123, TimeSpan.FromHours(10));
+        var result = dt.StartOfMonth();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(7, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(0, result.Minute);
+        Assert.Equal(0, result.Second);
+        Assert.Equal(0, result.Millisecond);
+    }
+
+    [Fact]
+    public void TestStartOfMonth_PreservesYearMonthAndOffset()
+    {
+        var offset = TimeSpan.FromHours(5.5);
+        var dt = new DateTimeOffset(2026, 12, 31, 23, 59, 59, offset);
+        var result = dt.StartOfMonth();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(12, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(offset, result.Offset);
+    }
+
+    [Fact]
+    public void TestStartOfMonth_AlreadyFirstDayMidnight()
+    {
+        var dt = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfMonth();
+        Assert.Equal(dt, result);
+    }
+
+    /*----------------------------------------------------------------------*/
     /* PrevWeekDay                                                          */
     /*----------------------------------------------------------------------*/
 

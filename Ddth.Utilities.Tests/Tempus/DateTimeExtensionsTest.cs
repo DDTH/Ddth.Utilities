@@ -48,6 +48,49 @@ public class DateTimeExtensionsTest
     }
 
     /*----------------------------------------------------------------------*/
+    /* StartOfMonth                                                         */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfMonth_ResetsToFirstDayAndZeroesTime()
+    {
+#if NET6_0
+        var dt = new DateTime(2026, 7, 18, 14, 30, 45, 123, DateTimeKind.Local);
+#else
+        var dt = new DateTime(2026, 7, 18, 14, 30, 45, 123, 456, DateTimeKind.Local);
+#endif
+        var result = dt.StartOfMonth();
+#if NET6_0
+        Assert.Equal(new DateTime(2026, 7, 1, 0, 0, 0, 0, DateTimeKind.Local), result);
+#else
+        Assert.Equal(new DateTime(2026, 7, 1, 0, 0, 0, 0, 0, DateTimeKind.Local), result);
+#endif
+    }
+
+    [Fact]
+    public void TestStartOfMonth_PreservesYearMonthAndKind()
+    {
+        var dt = new DateTime(2026, 12, 31, 23, 59, 59, 999, DateTimeKind.Utc);
+        var result = dt.StartOfMonth();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(12, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+    [Fact]
+    public void TestStartOfMonth_AlreadyFirstDayMidnight()
+    {
+#if NET6_0
+        var dt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+#else
+        var dt = new DateTime(2026, 1, 1, 0, 0, 0, 0, 0, DateTimeKind.Utc);
+#endif
+        var result = dt.StartOfMonth();
+        Assert.Equal(dt, result);
+    }
+
+    /*----------------------------------------------------------------------*/
     /* PrevWeekDay                                                          */
     /*----------------------------------------------------------------------*/
 

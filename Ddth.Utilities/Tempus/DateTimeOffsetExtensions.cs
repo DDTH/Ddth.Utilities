@@ -6,7 +6,7 @@ namespace Ddth.Utilities.Tempus;
 public static class DateTimeOffsetExtensions
 {
     /// <summary>
-    /// Returns a new DateTimeOffset with the time component set to 00:00:00
+    /// Returns a new DateTimeOffset with the time component set to 00:00:00, preserving <see cref="DateTime.Kind"/>.
     /// </summary>
     /// <param name="dateTime"></param>
     /// <returns></returns>
@@ -16,6 +16,20 @@ public static class DateTimeOffsetExtensions
         return new DateTimeOffset(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, 0, dateTime.Offset);
 #else
         return new DateTimeOffset(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, 0, 0, dateTime.Offset);
+#endif
+    }
+
+    /// <summary>
+    /// Returns a new DateTimeOffset set to 00:00:00 on the 1st day of the month, preserving <see cref="DateTimeOffset.Offset"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTimeOffset StartOfMonth(this DateTimeOffset dateTime)
+    {
+#if NET6_0
+        return new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0, dateTime.Offset);
+#else
+        return new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0, 0, dateTime.Offset);
 #endif
     }
 

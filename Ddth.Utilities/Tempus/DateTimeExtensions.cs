@@ -6,7 +6,7 @@ namespace Ddth.Utilities.Tempus;
 public static class DateTimeExtensions
 {
     /// <summary>
-    /// Returns a new DateTime with the time component set to 00:00:00
+    /// Returns a new DateTime with the time component set to 00:00:00, preserving <see cref="DateTime.Kind"/>.
     /// </summary>
     /// <param name="dateTime"></param>
     /// <returns></returns>
@@ -16,6 +16,20 @@ public static class DateTimeExtensions
         return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, 0, dateTime.Kind);
 #else
         return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, 0, 0, dateTime.Kind);
+#endif
+    }
+
+    /// <summary>
+    /// Returns a new DateTime set to 00:00:00 on the 1st day of the month, preserving <see cref="DateTime.Kind"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTime StartOfMonth(this DateTime dateTime)
+    {
+#if NET6_0
+        return new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0, dateTime.Kind);
+#else
+        return new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0, 0, dateTime.Kind);
 #endif
     }
 
