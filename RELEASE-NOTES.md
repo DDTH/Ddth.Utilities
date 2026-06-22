@@ -1,5 +1,15 @@
 # Ddth.Utilities Release Notes
 
+## 2026-06-22 - v0.4.0
+
+### Added/Refactoring/Deprecation
+
+- Feat: Add StartOfWeek extension method for DateTime and DateTimeOffset.
+- Feat: Add StartOfMonth extension method for DateTime and DateTimeOffset.
+- Feat: Add StartOfQuarter extension method for DateTime and DateTimeOffset.
+- Feat: Add StartOfCalendarYear extension method for DateTime and DateTimeOffset.
+- Feat: Add StartOfFiscalYear extension method for DateTime and DateTimeOffset.
+
 ## 2026-04-19 - v0.3.0
 
 ### Added/Refactoring/Deprecation
