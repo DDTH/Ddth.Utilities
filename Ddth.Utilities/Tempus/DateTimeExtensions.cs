@@ -20,6 +20,18 @@ public static class DateTimeExtensions
     }
 
     /// <summary>
+    /// Returns a new DateTime set to 00:00:00 on the first day of the week, preserving <see cref="DateTime.Kind"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <param name="firstDayOfWeek">The day considered the start of the week. Defaults to <see cref="DayOfWeek.Monday"/>.</param>
+    /// <returns></returns>
+    public static DateTime StartOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek = DayOfWeek.Monday)
+    {
+        var diff = ((int)dateTime.DayOfWeek - (int)firstDayOfWeek + 7) % 7;
+        return dateTime.AddDays(-diff).StartOfDay();
+    }
+
+    /// <summary>
     /// Returns a new DateTime set to 00:00:00 on the 1st day of the month, preserving <see cref="DateTime.Kind"/>.
     /// </summary>
     /// <param name="dateTime"></param>
@@ -30,6 +42,35 @@ public static class DateTimeExtensions
         return new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0, dateTime.Kind);
 #else
         return new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0, 0, dateTime.Kind);
+#endif
+    }
+
+    /// <summary>
+    /// Returns a new DateTime set to 00:00:00 on the 1st day of the quarter (Q1=Jan, Q2=Apr, Q3=Jul, Q4=Oct), preserving <see cref="DateTime.Kind"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTime StartOfQuarter(this DateTime dateTime)
+    {
+        var quarterMonth = ((dateTime.Month - 1) / 3) * 3 + 1;
+#if NET6_0
+        return new DateTime(dateTime.Year, quarterMonth, 1, 0, 0, 0, 0, dateTime.Kind);
+#else
+        return new DateTime(dateTime.Year, quarterMonth, 1, 0, 0, 0, 0, 0, dateTime.Kind);
+#endif
+    }
+
+    /// <summary>
+    /// Returns a new DateTime set to 00:00:00 on January 1st of the same year, preserving <see cref="DateTime.Kind"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTime StartOfCalendarYear(this DateTime dateTime)
+    {
+#if NET6_0
+        return new DateTime(dateTime.Year, 1, 1, 0, 0, 0, 0, dateTime.Kind);
+#else
+        return new DateTime(dateTime.Year, 1, 1, 0, 0, 0, 0, 0, dateTime.Kind);
 #endif
     }
 

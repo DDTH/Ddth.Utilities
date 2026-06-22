@@ -91,6 +91,171 @@ public class DateTimeExtensionsTest
     }
 
     /*----------------------------------------------------------------------*/
+    /* StartOfQuarter                                                       */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfQuarter_Q1()
+    {
+        var dt = new DateTime(2026, 2, 15, 10, 30, 0, DateTimeKind.Utc);
+        var result = dt.StartOfQuarter();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(1, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+    [Fact]
+    public void TestStartOfQuarter_Q2()
+    {
+        var dt = new DateTime(2026, 6, 30, 23, 59, 59, DateTimeKind.Local);
+        var result = dt.StartOfQuarter();
+        Assert.Equal(4, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfQuarter_Q3()
+    {
+        var dt = new DateTime(2026, 9, 1);
+        var result = dt.StartOfQuarter();
+        Assert.Equal(7, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfQuarter_Q4()
+    {
+        var dt = new DateTime(2026, 12, 31, 23, 59, 59, DateTimeKind.Utc);
+        var result = dt.StartOfQuarter();
+        Assert.Equal(10, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfQuarter_AlreadyStartOfQuarter()
+    {
+#if NET6_0
+        var dt = new DateTime(2026, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+#else
+        var dt = new DateTime(2026, 7, 1, 0, 0, 0, 0, 0, DateTimeKind.Utc);
+#endif
+        var result = dt.StartOfQuarter();
+        Assert.Equal(dt, result);
+    }
+
+    /*----------------------------------------------------------------------*/
+    /* StartOfCalendarYear                                                          */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfCalendarYear_MidYear()
+    {
+        var dt = new DateTime(2026, 7, 15, 14, 30, 0, DateTimeKind.Local);
+        var result = dt.StartOfCalendarYear();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(1, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(DateTimeKind.Local, result.Kind);
+    }
+
+    [Fact]
+    public void TestStartOfCalendarYear_EndOfYear()
+    {
+        var dt = new DateTime(2026, 12, 31, 23, 59, 59, DateTimeKind.Utc);
+        var result = dt.StartOfCalendarYear();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(1, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfCalendarYear_AlreadyStartOfCalendarYear()
+    {
+#if NET6_0
+        var dt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+#else
+        var dt = new DateTime(2026, 1, 1, 0, 0, 0, 0, 0, DateTimeKind.Utc);
+#endif
+        var result = dt.StartOfCalendarYear();
+        Assert.Equal(dt, result);
+    }
+
+    /*----------------------------------------------------------------------*/
+    /* StartOfWeek                                                          */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfWeek_DefaultMonday_FromWednesday()
+    {
+        // Wednesday 2026-06-17 -> Monday 2026-06-15
+        var dt = new DateTime(2026, 6, 17, 10, 30, 0, DateTimeKind.Local);
+        var result = dt.StartOfWeek();
+        Assert.Equal(DayOfWeek.Monday, result.DayOfWeek);
+        Assert.Equal(new DateTime(2026, 6, 15), result.Date);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(0, result.Minute);
+        Assert.Equal(0, result.Second);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_DefaultMonday_FromMonday()
+    {
+        // Monday 2026-06-15 -> stays Monday 2026-06-15
+        var dt = new DateTime(2026, 6, 15, 14, 0, 0, DateTimeKind.Utc);
+        var result = dt.StartOfWeek();
+        Assert.Equal(new DateTime(2026, 6, 15), result.Date);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_DefaultMonday_FromSunday()
+    {
+        // Sunday 2026-06-21 -> Monday 2026-06-15
+        var dt = new DateTime(2026, 6, 21);
+        Assert.Equal(DayOfWeek.Sunday, dt.DayOfWeek);
+        var result = dt.StartOfWeek();
+        Assert.Equal(DayOfWeek.Monday, result.DayOfWeek);
+        Assert.Equal(new DateTime(2026, 6, 15), result.Date);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_Sunday_FromWednesday()
+    {
+        // Wednesday 2026-06-17 -> Sunday 2026-06-14
+        var dt = new DateTime(2026, 6, 17, 10, 30, 0, DateTimeKind.Local);
+        var result = dt.StartOfWeek(DayOfWeek.Sunday);
+        Assert.Equal(DayOfWeek.Sunday, result.DayOfWeek);
+        Assert.Equal(new DateTime(2026, 6, 14), result.Date);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_Sunday_FromSunday()
+    {
+        // Sunday 2026-06-14 -> stays Sunday 2026-06-14
+        var dt = new DateTime(2026, 6, 14, 23, 59, 59);
+        Assert.Equal(DayOfWeek.Sunday, dt.DayOfWeek);
+        var result = dt.StartOfWeek(DayOfWeek.Sunday);
+        Assert.Equal(new DateTime(2026, 6, 14), result.Date);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_Saturday_FromSunday()
+    {
+        // Sunday 2026-06-21 -> Saturday 2026-06-20
+        var dt = new DateTime(2026, 6, 21);
+        var result = dt.StartOfWeek(DayOfWeek.Saturday);
+        Assert.Equal(DayOfWeek.Saturday, result.DayOfWeek);
+        Assert.Equal(new DateTime(2026, 6, 20), result.Date);
+    }
+
+    /*----------------------------------------------------------------------*/
     /* PrevWeekDay                                                          */
     /*----------------------------------------------------------------------*/
 
