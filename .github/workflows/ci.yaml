@@ -20,7 +20,7 @@ jobs:
     name: Build and test with .NET ${{ matrix.dotnet }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup .NET 6.x # min .NET required by this package is 6.x
         uses: actions/setup-dotnet@v5
         with:
@@ -45,7 +45,7 @@ jobs:
       - name: Pack
         run: dotnet pack --no-build --no-restore --configuration=Release -o ./
       - name: Codecov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -91,7 +91,7 @@ jobs:
       RELEASE_NOTES: ${{ steps.release_dry_run.outputs.releaseNotes }}
     steps:
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Install Node
         uses: actions/setup-node@v6
         with:
