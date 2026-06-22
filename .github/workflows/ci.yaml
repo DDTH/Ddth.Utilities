@@ -20,7 +20,7 @@ jobs:
     name: Build and test with .NET ${{ matrix.dotnet }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Setup .NET 6.x # min .NET required by this package is 6.x
         uses: actions/setup-dotnet@v5
         with:
@@ -40,12 +40,14 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore --configuration=Release
+      - name: Lint
+        run: dotnet format --verify-no-changes --no-restore
       - name: Test
-        run: dotnet test --no-restore --configuration=Release --collect="Code Coverage;Format=cobertura" --results-directory=TestResults/
+        run: dotnet test --no-restore --configuration=Release --collect="XPlat Code Coverage" --results-directory=TestResults/
       - name: Pack
         run: dotnet pack --no-build --no-restore --configuration=Release -o ./
       - name: Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -56,7 +58,7 @@ jobs:
 
   ReleaseDryRun:
     if: github.event_name == 'push'
-    needs: BuildAndTest
+    needs: [ BuildAndTest ]
     runs-on: ubuntu-latest
     outputs:
       RESULT: ${{ steps.release_dry_run.outputs.result }}
@@ -64,9 +66,9 @@ jobs:
       RELEASE_NOTES: ${{ steps.release_dry_run.outputs.releaseNotes }}
     steps:
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
       - name: Release (dry-run)

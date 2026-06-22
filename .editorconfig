@@ -16,6 +16,8 @@ trim_trailing_whitespace = true
 [{*.yaml,*.yml}]
 indent_size = 2
 
+#### .NET Coding Conventions ####
+
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = true
 dotnet_style_require_accessibility_modifiers = always:warning
