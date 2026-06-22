@@ -40,6 +40,274 @@ public class DateTimeOffsetExtensionsTest
     }
 
     /*----------------------------------------------------------------------*/
+    /* StartOfMonth                                                         */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfMonth_ResetsToFirstDayAndZeroesTime()
+    {
+        var dt = new DateTimeOffset(2026, 7, 18, 14, 30, 45, 123, TimeSpan.FromHours(10));
+        var result = dt.StartOfMonth();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(7, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(0, result.Minute);
+        Assert.Equal(0, result.Second);
+        Assert.Equal(0, result.Millisecond);
+    }
+
+    [Fact]
+    public void TestStartOfMonth_PreservesYearMonthAndOffset()
+    {
+        var offset = TimeSpan.FromHours(5.5);
+        var dt = new DateTimeOffset(2026, 12, 31, 23, 59, 59, offset);
+        var result = dt.StartOfMonth();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(12, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(offset, result.Offset);
+    }
+
+    [Fact]
+    public void TestStartOfMonth_AlreadyFirstDayMidnight()
+    {
+        var dt = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfMonth();
+        Assert.Equal(dt, result);
+    }
+
+    /*----------------------------------------------------------------------*/
+    /* StartOfQuarter                                                       */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfQuarter_Q1()
+    {
+        var dt = new DateTimeOffset(2026, 2, 15, 10, 30, 0, TimeSpan.FromHours(5));
+        var result = dt.StartOfQuarter();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(1, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(TimeSpan.FromHours(5), result.Offset);
+    }
+
+    [Fact]
+    public void TestStartOfQuarter_Q2()
+    {
+        var dt = new DateTimeOffset(2026, 6, 30, 23, 59, 59, TimeSpan.Zero);
+        var result = dt.StartOfQuarter();
+        Assert.Equal(4, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfQuarter_Q3()
+    {
+        var dt = new DateTimeOffset(2026, 9, 1, 12, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfQuarter();
+        Assert.Equal(7, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfQuarter_Q4()
+    {
+        var dt = new DateTimeOffset(2026, 12, 31, 23, 59, 59, TimeSpan.Zero);
+        var result = dt.StartOfQuarter();
+        Assert.Equal(10, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfQuarter_AlreadyStartOfQuarter()
+    {
+        var dt = new DateTimeOffset(2026, 7, 1, 0, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfQuarter();
+        Assert.Equal(dt, result);
+    }
+
+    /*----------------------------------------------------------------------*/
+    /* StartOfCalendarYear                                                          */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfCalendarYear_MidYear()
+    {
+        var dt = new DateTimeOffset(2026, 7, 15, 14, 30, 0, TimeSpan.FromHours(10));
+        var result = dt.StartOfCalendarYear();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(1, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(TimeSpan.FromHours(10), result.Offset);
+    }
+
+    [Fact]
+    public void TestStartOfCalendarYear_EndOfYear()
+    {
+        var dt = new DateTimeOffset(2026, 12, 31, 23, 59, 59, TimeSpan.Zero);
+        var result = dt.StartOfCalendarYear();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(1, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfCalendarYear_AlreadyStartOfCalendarYear()
+    {
+        var dt = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfCalendarYear();
+        Assert.Equal(dt, result);
+    }
+
+    /*----------------------------------------------------------------------*/
+    /* StartOfFiscalYear                                                    */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfFiscalYear_DefaultJanuary()
+    {
+        var dt = new DateTimeOffset(2026, 8, 15, 10, 0, 0, TimeSpan.FromHours(5));
+        var result = dt.StartOfFiscalYear();
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(1, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(TimeSpan.FromHours(5), result.Offset);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_July_AfterStart()
+    {
+        // Australia: fiscal year starts July. Date in Oct 2026 -> FY starts Jul 2026
+        var dt = new DateTimeOffset(2026, 10, 15, 14, 30, 0, TimeSpan.FromHours(10));
+        var result = dt.StartOfFiscalYear(7);
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(7, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_July_BeforeStart()
+    {
+        // Date in Mar 2026 -> FY starts Jul 2025
+        var dt = new DateTimeOffset(2026, 3, 15, 12, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfFiscalYear(7);
+        Assert.Equal(2025, result.Year);
+        Assert.Equal(7, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_April_OnStart()
+    {
+        // UK: fiscal year starts April. Date is exactly Apr 1 -> FY starts Apr 2026
+        var dt = new DateTimeOffset(2026, 4, 1, 0, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfFiscalYear(4);
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(4, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_October_BeforeStart()
+    {
+        // US federal: fiscal year starts October. Date in Sep 2026 -> FY starts Oct 2025
+        var dt = new DateTimeOffset(2026, 9, 30, 12, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfFiscalYear(10);
+        Assert.Equal(2025, result.Year);
+        Assert.Equal(10, result.Month);
+        Assert.Equal(1, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_InvalidMonth_Zero()
+    {
+        var dt = new DateTimeOffset(2026, 6, 15, 0, 0, 0, TimeSpan.Zero);
+        Assert.Throws<ArgumentOutOfRangeException>(() => dt.StartOfFiscalYear(0));
+    }
+
+    [Fact]
+    public void TestStartOfFiscalYear_InvalidMonth_Thirteen()
+    {
+        var dt = new DateTimeOffset(2026, 6, 15, 0, 0, 0, TimeSpan.Zero);
+        Assert.Throws<ArgumentOutOfRangeException>(() => dt.StartOfFiscalYear(13));
+    }
+
+    /*----------------------------------------------------------------------*/
+    /* StartOfWeek                                                          */
+    /*----------------------------------------------------------------------*/
+
+    [Fact]
+    public void TestStartOfWeek_DefaultMonday_FromWednesday()
+    {
+        // Wednesday 2026-06-17
+        var dt = new DateTimeOffset(2026, 6, 17, 10, 30, 0, TimeSpan.FromHours(10));
+        var result = dt.StartOfWeek();
+        Assert.Equal(DayOfWeek.Monday, result.DayOfWeek);
+        Assert.Equal(15, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(TimeSpan.FromHours(10), result.Offset);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_DefaultMonday_FromMonday()
+    {
+        // Monday 2026-06-15
+        var dt = new DateTimeOffset(2026, 6, 15, 14, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfWeek();
+        Assert.Equal(15, result.Day);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_DefaultMonday_FromSunday()
+    {
+        // Sunday 2026-06-21 -> Monday 2026-06-15
+        var dt = new DateTimeOffset(2026, 6, 21, 12, 0, 0, TimeSpan.Zero);
+        Assert.Equal(DayOfWeek.Sunday, dt.DayOfWeek);
+        var result = dt.StartOfWeek();
+        Assert.Equal(DayOfWeek.Monday, result.DayOfWeek);
+        Assert.Equal(15, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_Sunday_FromWednesday()
+    {
+        // Wednesday 2026-06-17 -> Sunday 2026-06-14
+        var dt = new DateTimeOffset(2026, 6, 17, 10, 30, 0, TimeSpan.Zero);
+        var result = dt.StartOfWeek(DayOfWeek.Sunday);
+        Assert.Equal(DayOfWeek.Sunday, result.DayOfWeek);
+        Assert.Equal(14, result.Day);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_Sunday_FromSunday()
+    {
+        // Sunday 2026-06-14 -> stays Sunday 2026-06-14
+        var dt = new DateTimeOffset(2026, 6, 14, 23, 59, 59, TimeSpan.Zero);
+        Assert.Equal(DayOfWeek.Sunday, dt.DayOfWeek);
+        var result = dt.StartOfWeek(DayOfWeek.Sunday);
+        Assert.Equal(14, result.Day);
+        Assert.Equal(0, result.Hour);
+    }
+
+    [Fact]
+    public void TestStartOfWeek_Saturday_FromSunday()
+    {
+        // Sunday 2026-06-21 -> Saturday 2026-06-20
+        var dt = new DateTimeOffset(2026, 6, 21, 12, 0, 0, TimeSpan.Zero);
+        var result = dt.StartOfWeek(DayOfWeek.Saturday);
+        Assert.Equal(DayOfWeek.Saturday, result.DayOfWeek);
+        Assert.Equal(20, result.Day);
+    }
+
+    /*----------------------------------------------------------------------*/
     /* PrevWeekDay                                                          */
     /*----------------------------------------------------------------------*/
 

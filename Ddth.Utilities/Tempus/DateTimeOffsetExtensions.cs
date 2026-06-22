@@ -6,7 +6,7 @@ namespace Ddth.Utilities.Tempus;
 public static class DateTimeOffsetExtensions
 {
     /// <summary>
-    /// Returns a new DateTimeOffset with the time component set to 00:00:00
+    /// Returns a new DateTimeOffset with the time component set to 00:00:00, preserving <see cref="DateTime.Kind"/>.
     /// </summary>
     /// <param name="dateTime"></param>
     /// <returns></returns>
@@ -16,6 +16,79 @@ public static class DateTimeOffsetExtensions
         return new DateTimeOffset(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, 0, dateTime.Offset);
 #else
         return new DateTimeOffset(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0, 0, 0, dateTime.Offset);
+#endif
+    }
+
+    /// <summary>
+    /// Returns a new DateTimeOffset set to 00:00:00 on the first day of the week, preserving <see cref="DateTimeOffset.Offset"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <param name="firstDayOfWeek">The day considered the start of the week. Defaults to <see cref="DayOfWeek.Monday"/>.</param>
+    /// <returns></returns>
+    public static DateTimeOffset StartOfWeek(this DateTimeOffset dateTime, DayOfWeek firstDayOfWeek = DayOfWeek.Monday)
+    {
+        var diff = ((int)dateTime.DayOfWeek - (int)firstDayOfWeek + 7) % 7;
+        return dateTime.AddDays(-diff).StartOfDay();
+    }
+
+    /// <summary>
+    /// Returns a new DateTimeOffset set to 00:00:00 on the 1st day of the month, preserving <see cref="DateTimeOffset.Offset"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTimeOffset StartOfMonth(this DateTimeOffset dateTime)
+    {
+#if NET6_0
+        return new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0, dateTime.Offset);
+#else
+        return new DateTimeOffset(dateTime.Year, dateTime.Month, 1, 0, 0, 0, 0, 0, dateTime.Offset);
+#endif
+    }
+
+    /// <summary>
+    /// Returns a new DateTimeOffset set to 00:00:00 on the 1st day of the quarter (Q1=Jan, Q2=Apr, Q3=Jul, Q4=Oct), preserving <see cref="DateTimeOffset.Offset"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTimeOffset StartOfQuarter(this DateTimeOffset dateTime)
+    {
+        var quarterMonth = ((dateTime.Month - 1) / 3) * 3 + 1;
+#if NET6_0
+        return new DateTimeOffset(dateTime.Year, quarterMonth, 1, 0, 0, 0, 0, dateTime.Offset);
+#else
+        return new DateTimeOffset(dateTime.Year, quarterMonth, 1, 0, 0, 0, 0, 0, dateTime.Offset);
+#endif
+    }
+
+    /// <summary>
+    /// Returns a new DateTimeOffset set to 00:00:00 on January 1st of the same year, preserving <see cref="DateTimeOffset.Offset"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <returns></returns>
+    public static DateTimeOffset StartOfCalendarYear(this DateTimeOffset dateTime)
+    {
+#if NET6_0
+        return new DateTimeOffset(dateTime.Year, 1, 1, 0, 0, 0, 0, dateTime.Offset);
+#else
+        return new DateTimeOffset(dateTime.Year, 1, 1, 0, 0, 0, 0, 0, dateTime.Offset);
+#endif
+    }
+
+    /// <summary>
+    /// Returns a new DateTimeOffset set to 00:00:00 on the 1st day of the fiscal year, preserving <see cref="DateTimeOffset.Offset"/>.
+    /// </summary>
+    /// <param name="dateTime"></param>
+    /// <param name="firstMonthOfFiscalYear">The month that starts the fiscal year (1–12). Defaults to 1 (January).</param>
+    /// <returns></returns>
+    public static DateTimeOffset StartOfFiscalYear(this DateTimeOffset dateTime, int firstMonthOfFiscalYear = 1)
+    {
+        if (firstMonthOfFiscalYear < 1 || firstMonthOfFiscalYear > 12)
+            throw new ArgumentOutOfRangeException(nameof(firstMonthOfFiscalYear), firstMonthOfFiscalYear, "Value must be between 1 and 12.");
+        var fiscalYearDate = dateTime.Month >= firstMonthOfFiscalYear ? dateTime : dateTime.AddYears(-1);
+#if NET6_0
+        return new DateTimeOffset(fiscalYearDate.Year, firstMonthOfFiscalYear, 1, 0, 0, 0, 0, fiscalYearDate.Offset);
+#else
+        return new DateTimeOffset(fiscalYearDate.Year, firstMonthOfFiscalYear, 1, 0, 0, 0, 0, 0, fiscalYearDate.Offset);
 #endif
     }
 
