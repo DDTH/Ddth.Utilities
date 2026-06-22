@@ -14,9 +14,11 @@ dotnet test --configuration=Release --filter "FullyQualifiedName~Ddth.Utilities.
 # Run all tests in a specific test class
 dotnet test --configuration=Release --filter "FullyQualifiedName~Ddth.Utilities.Tests.ReflectionHelper.ReflectionDIHelperTest"
 
-# Test with code coverage
-dotnet test --configuration=Release --collect="Code Coverage;Format=cobertura" --results-directory=TestResults/
+# Test with code coverage (see .dev.md for the full report flow)
+dotnet test --configuration=Release --logger "console;verbosity=detailed" --collect="XPlat Code Coverage" --results-directory=TestResults/
 ```
+
+Formatting/analysis is governed by `.editorconfig` (rich Roslyn ruleset); run `dotnet format` to apply it. There is no separate lint step.
 
 ## Architecture
 

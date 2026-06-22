@@ -3,14 +3,12 @@ using System.Reflection;
 
 namespace Ddth.Utilities.Tests.ReflectionHelper;
 
-[TestClass]
 public class ReflectionDIHelperTest
 {
-    private IServiceProvider _serviceProvider = default!;
-    private IEnumerable<object?> _services = default!;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IEnumerable<object?> _services;
 
-    [TestInitialize]
-    public void Setup()
+    public ReflectionDIHelperTest()
     {
         _serviceProvider = new ServiceCollection()
             .AddSingleton<IDummyService1>(new DummyServiceMultiInterfaces("1"))
@@ -24,82 +22,80 @@ public class ReflectionDIHelperTest
 
     /*----------------------------------------------------------------------*/
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsWithServiceProvider()
     {
         var parameters = new Type[] { typeof(IDummyService1), typeof(IDummyService2) };
         var result = ReflectionDIHelper.BuildDIParams(_serviceProvider, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(2, result.Length);
-        Assert.IsInstanceOfType(result[0], typeof(IDummyService1));
-        Assert.IsInstanceOfType(result[1], typeof(IDummyService2));
-        Assert.AreEqual("1", ((IDummyService1)result[0]!).Name);
-        Assert.AreEqual("2", ((IDummyService2)result[1]!).Name);
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Length);
+        Assert.IsType<DummyServiceMultiInterfaces>(result[0]);
+        Assert.IsAssignableFrom<IDummyService1>(result[0]);
+        Assert.IsAssignableFrom<IDummyService2>(result[1]);
+        Assert.Equal("1", ((IDummyService1)result[0]!).Name);
+        Assert.Equal("2", ((IDummyService2)result[1]!).Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsWithNullServiceProvider()
     {
         var parameters = new Type[] { typeof(IDummyService1), typeof(IDummyService2) };
         var result = ReflectionDIHelper.BuildDIParams(null, _services, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(2, result.Length);
-        Assert.IsInstanceOfType(result[0], typeof(IDummyService1));
-        Assert.IsInstanceOfType(result[1], typeof(IDummyService2));
-        Assert.AreEqual("0", ((IDummyService1)result[0]!).Name);
-        Assert.AreEqual("0", ((IDummyService2)result[1]!).Name);
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Length);
+        Assert.IsAssignableFrom<IDummyService1>(result[0]);
+        Assert.IsAssignableFrom<IDummyService2>(result[1]);
+        Assert.Equal("0", ((IDummyService1)result[0]!).Name);
+        Assert.Equal("0", ((IDummyService2)result[1]!).Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsFallbackToServiceProvider()
     {
         var parameters = new Type[] { typeof(string) };
         var result = ReflectionDIHelper.BuildDIParams(_serviceProvider, _services, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Length);
-        Assert.IsInstanceOfType(result[0], typeof(string));
-        Assert.AreEqual("Dummy String", ((string)result[0]!));
+        Assert.NotNull(result);
+        var single = Assert.Single(result);
+        Assert.IsType<string>(single);
+        Assert.Equal("Dummy String", (string)single!);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsFallbackToServiceProviderWithNoAdditionalServices()
     {
         var parameters = new Type[] { typeof(string) };
         var result = ReflectionDIHelper.BuildDIParams(_serviceProvider, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Length);
-        Assert.IsInstanceOfType(result[0], typeof(string));
-        Assert.AreEqual("Dummy String", ((string)result[0]!));
+        Assert.NotNull(result);
+        var single = Assert.Single(result);
+        Assert.IsType<string>(single);
+        Assert.Equal("Dummy String", (string)single!);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsNullResultWithNullServiceProvider()
     {
         var parameters = new Type[] { typeof(IUnusedInterface) };
         var result = ReflectionDIHelper.BuildDIParams(null, _services, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Length);
-        Assert.IsNull(result[0]);
+        Assert.NotNull(result);
+        Assert.Null(Assert.Single(result));
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsNullResultWithNullServiceProviderAndNoAdditionalServices()
     {
         var parameters = new Type[] { typeof(IUnusedInterface) };
         var result = ReflectionDIHelper.BuildDIParams(null, null, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Length);
-        Assert.IsNull(result[0]);
+        Assert.NotNull(result);
+        Assert.Null(Assert.Single(result));
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsNullResultWithServiceProvider()
     {
         var parameters = new Type[] { typeof(IUnusedInterface) };
         var result = ReflectionDIHelper.BuildDIParams(_serviceProvider, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Length);
-        Assert.IsNull(result[0]);
+        Assert.NotNull(result);
+        Assert.Null(Assert.Single(result));
     }
 
     /*----------------------------------------------------------------------*/
@@ -119,88 +115,87 @@ public class ReflectionDIHelperTest
         }
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsWithServiceProviderUsingParameterInfo()
     {
         var parameters = typeof(TestClass).GetMethod("TestMethodNeedsDummyService1and2")!.GetParameters();
         var result = ReflectionDIHelper.BuildDIParams(_serviceProvider, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(2, result.Length);
-        Assert.IsInstanceOfType(result[0], typeof(IDummyService1));
-        Assert.IsInstanceOfType(result[1], typeof(IDummyService2));
-        Assert.AreEqual("1", ((IDummyService1)result[0]!).Name);
-        Assert.AreEqual("2", ((IDummyService2)result[1]!).Name);
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Length);
+        Assert.IsAssignableFrom<IDummyService1>(result[0]);
+        Assert.IsAssignableFrom<IDummyService2>(result[1]);
+        Assert.Equal("1", ((IDummyService1)result[0]!).Name);
+        Assert.Equal("2", ((IDummyService2)result[1]!).Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsWithNullServiceProviderUsingParameterInfo()
     {
         var parameters = typeof(TestClass).GetMethod("TestMethodNeedsDummyService1and2")!.GetParameters();
         var result = ReflectionDIHelper.BuildDIParams(null, _services, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(2, result.Length);
-        Assert.IsInstanceOfType(result[0], typeof(IDummyService1));
-        Assert.IsInstanceOfType(result[1], typeof(IDummyService2));
-        Assert.AreEqual("0", ((IDummyService1)result[0]!).Name);
-        Assert.AreEqual("0", ((IDummyService2)result[1]!).Name);
+        Assert.NotNull(result);
+        Assert.Equal(2, result.Length);
+        Assert.IsAssignableFrom<IDummyService1>(result[0]);
+        Assert.IsAssignableFrom<IDummyService2>(result[1]);
+        Assert.Equal("0", ((IDummyService1)result[0]!).Name);
+        Assert.Equal("0", ((IDummyService2)result[1]!).Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsFallbackToServiceProviderUsingParameterInfo()
     {
         var parameters = typeof(TestClass).GetMethod("TestMethodNeedsString")!.GetParameters();
         var result = ReflectionDIHelper.BuildDIParams(_serviceProvider, _services, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Length);
-        Assert.IsInstanceOfType(result[0], typeof(string));
-        Assert.AreEqual("Dummy String", ((string)result[0]!));
+        Assert.NotNull(result);
+        var single = Assert.Single(result);
+        Assert.IsType<string>(single);
+        Assert.Equal("Dummy String", (string)single!);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestBuildDIParamsNullResultUsingParameterInfo()
     {
         var parameters = typeof(TestClass).GetMethod("TestMethodNeedsUnusedInterface")!.GetParameters();
         var result = ReflectionDIHelper.BuildDIParams(null, _services, parameters);
-        Assert.IsNotNull(result);
-        Assert.AreEqual(1, result.Length);
-        Assert.IsNull(result[0]);
+        Assert.NotNull(result);
+        Assert.Null(Assert.Single(result));
     }
 
     /*----------------------------------------------------------------------*/
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceNotAssignableShouldBeNull()
     {
         var obj = ReflectionDIHelper.CreateInstance<IUnusedInterface>(
             _serviceProvider,
             typeof(DummyClass)
         );
-        Assert.IsNull(obj);
+        Assert.Null(obj);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceTypeClass()
     {
         var obj = ReflectionDIHelper.CreateInstance<DummyClass>(
             _serviceProvider,
             typeof(DummyClass)
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("Default", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("Default", obj.Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceTypeInterface()
     {
         var obj = ReflectionDIHelper.CreateInstance<IDummyInterface>(
             _serviceProvider,
             typeof(DummyClass)
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("Default", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("Default", obj.Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceTypeInterfaceFallback()
     {
         var obj = ReflectionDIHelper.CreateInstance<IDummyInterface>(
@@ -208,24 +203,24 @@ public class ReflectionDIHelperTest
             _services,
             typeof(DummyClass)
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("Default", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("Default", obj.Name);
     }
 
     /*----------------------------------------------------------------------*/
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceWithConstructor()
     {
         var obj = ReflectionDIHelper.CreateInstance<DummyClassWithConstructor>(
             _serviceProvider,
             typeof(DummyClassWithConstructor)
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("Dummy", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("Dummy", obj.Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceWithSelectedConstructorTypeArr()
     {
         var obj = ReflectionDIHelper.CreateInstance<DummyClassWithMultipleConstructor>(
@@ -233,11 +228,11 @@ public class ReflectionDIHelperTest
             typeof(DummyClassWithMultipleConstructor),
             new Type[] { typeof(string) }
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("constructor 2", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("constructor 2", obj.Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceWithSelectedConstructorParameterInfoArr()
     {
         var pinfo = typeof(DummyClassWithMultipleConstructor).GetConstructors()[0].GetParameters()[0];
@@ -246,11 +241,11 @@ public class ReflectionDIHelperTest
             typeof(DummyClassWithMultipleConstructor),
             new ParameterInfo[] { pinfo }
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("constructor 1", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("constructor 1", obj.Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceWithSelectedConstructorTypeArrNotAssignableShouldBeNull()
     {
         var obj = ReflectionDIHelper.CreateInstance<IUnusedInterface>(
@@ -258,10 +253,10 @@ public class ReflectionDIHelperTest
             typeof(DummyClassWithMultipleConstructor),
             new Type[] { typeof(string) }
         );
-        Assert.IsNull(obj);
+        Assert.Null(obj);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceWithSelectedConstructorParameterInfoArrNotAssignableShouldBeNull()
     {
         var pinfo = typeof(DummyClassWithMultipleConstructor).GetConstructors()[0].GetParameters()[0];
@@ -270,32 +265,32 @@ public class ReflectionDIHelperTest
             typeof(DummyClassWithMultipleConstructor),
             new ParameterInfo[] { pinfo }
         );
-        Assert.IsNull(obj);
+        Assert.Null(obj);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceNeedIDummyService1()
     {
         var obj = ReflectionDIHelper.CreateInstance<IDummyService1>(
             _serviceProvider,
             typeof(DummyClassNeedIDummyService1)
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("1", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("1", obj.Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceNeedIDummyService2()
     {
         var obj = ReflectionDIHelper.CreateInstance<IDummyService2>(
             _serviceProvider,
             typeof(DummyClassNeedIDummyService2)
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("2", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("2", obj.Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceOfDummyService1HasIDummyService0()
     {
         var obj = ReflectionDIHelper.CreateInstance<IDummyService>(
@@ -303,11 +298,11 @@ public class ReflectionDIHelperTest
             _services,
             typeof(DummyClassNeedIDummyService1)
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("0", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("0", obj.Name);
     }
 
-    [TestMethod]
+    [Fact]
     public void TestCreateInstanceOfDummyService2HasIDummyService0()
     {
         var obj = ReflectionDIHelper.CreateInstance<IDummyService>(
@@ -315,7 +310,7 @@ public class ReflectionDIHelperTest
             _services,
             typeof(DummyClassNeedIDummyService2)
         );
-        Assert.IsNotNull(obj);
-        Assert.AreEqual("0", obj.Name);
+        Assert.NotNull(obj);
+        Assert.Equal("0", obj.Name);
     }
 }
