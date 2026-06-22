@@ -84,7 +84,6 @@ public static class DateTimeOffsetExtensions
     {
         if (firstMonthOfFiscalYear < 1 || firstMonthOfFiscalYear > 12)
             throw new ArgumentOutOfRangeException(nameof(firstMonthOfFiscalYear), firstMonthOfFiscalYear, "Value must be between 1 and 12.");
-        var year = dateTime.Month >= firstMonthOfFiscalYear ? dateTime.Year : dateTime.Year - 1;
         var fiscalYearDate = dateTime.Month >= firstMonthOfFiscalYear ? dateTime : dateTime.AddYears(-1);
 #if NET6_0
         return new DateTimeOffset(fiscalYearDate.Year, firstMonthOfFiscalYear, 1, 0, 0, 0, 0, fiscalYearDate.Offset);
